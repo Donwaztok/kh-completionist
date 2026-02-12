@@ -58,7 +58,7 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
         variant="solid"
         color="primary"
         isDisabled={!value.trim() || isLoading}
-        className="sm:w-auto"
+        className="sm:w-auto font-kh font-semibold"
       >
         {isLoading ? "Buscando..." : "Buscar minhas conquistas"}
       </Button>

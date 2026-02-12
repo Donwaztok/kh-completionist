@@ -122,7 +122,7 @@ export function KHGameCard({ game }: KHGameCardProps) {
   );
 
   return (
-    <Card className="border border-divider">
+    <Card className="border border-kh-gold/20 bg-kh-blue-light/30 backdrop-blur-sm shadow-kh-glow-sm">
       <div className="p-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="min-w-0 flex-1">

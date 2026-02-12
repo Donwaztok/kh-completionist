@@ -6,4 +6,58 @@
 @theme {
   --font-sans: "font", sans-serif;
   --font-mono: "monospace", monospace;
+  /* Kingdom Hearts - paleta temática */
+  --kh-gold: #d4af37;
+  --kh-gold-light: #f4e4bc;
+  --kh-gold-dark: #8b7355;
+  --kh-blue: #0a1628;
+  --kh-blue-light: #1a2d4a;
+  --kh-silver: #c0c0c0;
+  --kh-heart: #e84393;
+  --kh-glow: rgba(212, 175, 55, 0.3);
+}
+
+/* Fundo estrelado sutil para tema Kingdom Hearts */
+.kh-starry-bg {
+  background: linear-gradient(
+    180deg,
+    #030712 0%,
+    #0a1628 30%,
+    #0f172a 70%,
+    #030712 100%
+  );
+  position: relative;
+  overflow-x: hidden; /* evita scroll horizontal, permite vertical */
+}
+
+.kh-starry-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+      2px 2px at 20% 30%,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    ),
+    radial-gradient(
+      2px 2px at 40% 70%,
+      rgba(212, 175, 55, 0.2),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 90% 10%,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    ),
+    radial-gradient(
+      2px 2px at 60% 50%,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.font-kh {
+  font-family: var(--font-kh), serif;
 }

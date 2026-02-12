@@ -1,12 +1,25 @@
 "use client";
 
 import { Skeleton, Tab, Tabs } from "@heroui/react";
+import { motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { KHGameCard } from "@/components/KHGameCard";
 import { SteamSearchForm } from "@/components/SteamSearchForm";
 import { subtitle, title } from "@/components/primitives";
 import type { KHCollectionWithGames, KHGameWithAchievements } from "@/lib/kingdom-hearts";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4 },
+};
+
+const staggerContainer = {
+  animate: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+};
 
 function gameKey(game: KHGameWithAchievements) {
   return `${game.appId}-${game.name}`;
@@ -95,34 +108,66 @@ export default function Home() {
   }, []);
 
   return (
-    <section className="flex flex-col gap-8 py-8 md:py-10">
-      <div className="inline-block max-w-xl text-center">
-        <h1 className={title()}>Kingdom Hearts</h1>
-        <h1 className={title({ color: "violet" })}>Steam Achievement Tracker</h1>
-        <p className={subtitle({ class: "mt-4" })}>
+    <motion.section
+      className="flex flex-col gap-8 py-8 md:py-10"
+      initial="initial"
+      animate="animate"
+      variants={staggerContainer}
+    >
+      <motion.div
+        className="inline-block max-w-xl text-center mx-auto"
+        variants={fadeInUp}
+      >
+        <h1 className="font-kh text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-1">
+          Kingdom Hearts
+        </h1>
+        <h2 className={`${title({ color: "violet", size: "sm" })} font-kh`}>
+          Steam Achievement Tracker
+        </h2>
+        <p className={subtitle({ class: "mt-4 mx-auto" })}>
           Insira seu SteamID ou vanity URL para ver suas conquistas da franquia
           Kingdom Hearts, organizadas por jogo.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="flex justify-center">
+      <motion.div
+        className="flex justify-center"
+        variants={fadeInUp}
+      >
         <SteamSearchForm onSearch={handleSearch} isLoading={loading} />
-      </div>
+      </motion.div>
 
       {error && (
-        <div className="rounded-lg bg-danger-50 dark:bg-danger-500/10 px-4 py-3 text-danger">
+        <motion.div
+          className="rounded-lg bg-danger-50 dark:bg-danger-500/10 px-4 py-3 text-danger"
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+        >
           <p className="text-sm font-medium">{error}</p>
-        </div>
+        </motion.div>
       )}
 
-      {loading && <GamesListSkeleton />}
+      {loading && (
+        <motion.div variants={fadeInUp}>
+          <GamesListSkeleton />
+        </motion.div>
+      )}
 
       {!loading && collections.length > 0 && (
-        <>
-          <div className="rounded-xl bg-default-100 dark:bg-default-50/50 p-4 md:p-6 border border-divider">
+        <motion.div
+          className="space-y-6"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
+          <motion.div
+            className="rounded-xl bg-kh-blue-light/50 backdrop-blur-sm p-4 md:p-6 border border-kh-gold/20 shadow-kh-glow-sm"
+            variants={fadeInUp}
+          >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-semibold">
+                <h2 className="font-kh text-lg font-semibold text-white">
                   Progresso geral da franquia
                 </h2>
                 <p className="text-sm text-default-500 mt-1">
@@ -156,9 +201,9 @@ export default function Home() {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="space-y-6">
+          <motion.div className="space-y-6" variants={fadeInUp}>
             {allGames.length > 0 ? (
               <Tabs
                 selectedKey={selectedTab}
@@ -167,9 +212,9 @@ export default function Home() {
                 classNames={{
                   tabList:
                     "gap-2 overflow-x-auto flex-nowrap w-full [&::-webkit-scrollbar]:h-1",
-                  cursor: "bg-primary",
+                  cursor: "bg-kh-gold",
                   tab: "px-0 h-12",
-                  tabContent: "group-data-[selected=true]:text-primary",
+                  tabContent: "group-data-[selected=true]:text-kh-gold",
                 }}
               >
                 {allGames.map((game) => (
@@ -195,15 +240,20 @@ export default function Home() {
                 ))}
               </Tabs>
             ) : null}
-          </div>
-        </>
+          </motion.div>
+        </motion.div>
       )}
 
       {!loading && collections.length === 0 && !error && (
-        <p className="text-default-500 text-center py-8">
+        <motion.p
+          className="text-default-500 text-center py-8"
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+        >
           Digite seu SteamID ou vanity URL e clique em Buscar para começar.
-        </p>
+        </motion.p>
       )}
-    </section>
+    </motion.section>
   );
 }
