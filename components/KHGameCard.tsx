@@ -159,8 +159,8 @@ export function KHGameCard({ game }: KHGameCardProps) {
           </div>
         </div>
 
-        <div className="mt-4 pt-4 border-t border-divider">
-          <div className="flex flex-nowrap gap-2 mb-4 w-fit">
+        <div className="mt-3 pt-3 border-t border-divider">
+          <div className="flex flex-nowrap gap-2 mb-3 w-fit">
             <Select
               aria-label="Filtrar conquistas"
               selectedKeys={[filter]}

@@ -67,6 +67,15 @@ export interface KHCollectionWithGames {
   games: KHGameWithAchievements[];
 }
 
+export interface SteamPlayerSummary {
+  steamid: string;
+  personaname: string;
+  profileurl: string;
+  avatar: string;
+  avatarmedium: string;
+  avatarfull: string;
+}
+
 interface SteamOwnedGame {
   appid: number;
   name: string;
@@ -145,6 +154,20 @@ async function fetchOwnedGames(steamId: string): Promise<SteamOwnedGame[]> {
   }>(url);
 
   return data?.response?.games ?? [];
+}
+
+async function fetchPlayerSummaries(
+  steamId: string
+): Promise<SteamPlayerSummary | null> {
+  const key = getApiKey();
+  const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${key}&steamids=${steamId}`;
+
+  const data = await fetchFromSteam<{
+    response?: { players?: SteamPlayerSummary[] };
+  }>(url);
+
+  const players = data?.response?.players ?? [];
+  return players[0] ?? null;
 }
 
 async function processApp(
@@ -245,8 +268,14 @@ async function processInBatches<T, R>(
 
 export async function fetchKingdomHeartsAchievements(
   steamId: string
-): Promise<{ collections: KHCollectionWithGames[] }> {
-  const ownedGames = await fetchOwnedGames(steamId);
+): Promise<{
+  collections: KHCollectionWithGames[];
+  player: SteamPlayerSummary | null;
+}> {
+  const [ownedGames, player] = await Promise.all([
+    fetchOwnedGames(steamId),
+    fetchPlayerSummaries(steamId),
+  ]);
   const ownedAppIds = new Set(ownedGames.map((g) => g.appid));
 
   const uniqueAppIds = Array.from(
@@ -292,5 +321,5 @@ export async function fetchKingdomHeartsAchievements(
     }
   ).filter((col) => col.games.length > 0);
 
-  return { collections };
+  return { collections, player };
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { Chip } from "@heroui/react";
 import type { SteamAchievement } from "@/types/steam";
 
 export interface AchievementListProps {
@@ -27,15 +26,15 @@ export function AchievementList({ achievements }: AchievementListProps) {
   }
 
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-1.5">
       {achievements.map((achievement, index) => (
         <li
           key={`${achievement.name}-${index}`}
-          className={`flex items-start gap-3 p-3 rounded-lg ${
+          className={`flex items-center gap-2 py-2 px-2 rounded ${
             achievement.unlocked ? "bg-success/20" : "bg-default-100/50"
           }`}
         >
-          <div className="flex-shrink-0 mt-0.5">
+          <div className="flex-shrink-0">
             {achievement.icon || achievement.icongray ? (
               <img
                 src={
@@ -44,33 +43,33 @@ export function AchievementList({ achievements }: AchievementListProps) {
                     : achievement.icongray ?? achievement.icon
                 }
                 alt=""
-                className="w-10 h-10 rounded"
+                className="w-6 h-6 rounded"
                 loading="lazy"
               />
             ) : (
-              <Chip
-                size="sm"
-                color={achievement.unlocked ? "success" : "default"}
-                variant="flat"
+              <span
+                className={`inline-flex w-6 h-6 items-center justify-center rounded text-xs ${
+                  achievement.unlocked ? "bg-success/30 text-success" : "bg-default-200 text-default-500"
+                }`}
               >
                 {achievement.unlocked ? "✓" : "○"}
-              </Chip>
+              </span>
             )}
           </div>
           <div className="flex-1 min-w-0">
             <p
-              className={`font-medium text-sm ${achievement.unlocked ? "text-default-600" : ""}`}
+              className={`font-medium text-xs truncate ${achievement.unlocked ? "text-default-600" : ""}`}
             >
               {achievement.name}
             </p>
             {achievement.description && (
-              <p className="text-xs text-default-500 mt-0.5">
+              <p className="text-[10px] text-default-500 truncate mt-0.5">
                 {achievement.description}
               </p>
             )}
             {achievement.unlocked && achievement.unlockTime && (
-              <p className="text-xs text-default-400 mt-1">
-                Desbloqueado em {formatUnlockTime(achievement.unlockTime)}
+              <p className="text-[10px] text-default-400 mt-0.5">
+                {formatUnlockTime(achievement.unlockTime)}
               </p>
             )}
           </div>
