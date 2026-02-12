@@ -1,6 +1,6 @@
 "use client";
 
-import { Skeleton, Tab, Tabs } from "@heroui/react";
+import { Button, Skeleton } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -195,7 +195,7 @@ export default function Home() {
                           0
                         )
                       )) *
-                      100
+                    100
                   )}
                   %
                 </span>
@@ -205,40 +205,57 @@ export default function Home() {
 
           <motion.div className="space-y-6" variants={fadeInUp}>
             {allGames.length > 0 ? (
-              <Tabs
-                selectedKey={selectedTab}
-                onSelectionChange={(k) => setSelectedTab((k ?? "") as string)}
-                variant="underlined"
-                classNames={{
-                  tabList:
-                    "gap-2 overflow-x-auto flex-nowrap w-full [&::-webkit-scrollbar]:h-1",
-                  cursor: "bg-kh-gold",
-                  tab: "px-0 h-12",
-                  tabContent: "group-data-[selected=true]:text-kh-gold",
-                }}
-              >
-                {allGames.map((game) => (
-                  <Tab
-                    key={gameKey(game)}
-                    title={
-                      <span className="flex items-center gap-2">
-                        {game.name}
-                        <span
-                          className={`text-xs ${
-                            game.isCompleted ? "text-success" : "text-default-400"
-                          }`}
-                        >
-                          {game.percentage}%
-                        </span>
+              <>
+                <div className="flex flex-col gap-1 items-start">
+                  {collections.map((collection) => (
+                    <div
+                      key={collection.name}
+                      className="flex flex-row items-center gap-3 p-1.5 rounded-xl bg-default-100 dark:bg-default-100/10 border border-default-200/50 w-fit max-w-full"
+                    >
+                      <span className="text-xs font-semibold text-default-600 dark:text-default-500 uppercase tracking-wider shrink-0 min-w-[5rem]">
+                        {collection.name}
                       </span>
-                    }
-                  >
-                    <div className="mt-6">
-                      <KHGameCard game={game} />
+                      <div className="flex flex-wrap gap-1">
+                        {collection.games.map((game) => {
+                          const key = gameKey(game);
+                          const isSelected = selectedTab === key;
+                          return (
+                            <Button
+                              key={key}
+                              size="sm"
+                              variant="light"
+                              className={`min-h-0 px-2 py-1 font-medium text-sm rounded-lg transition-all ${isSelected
+                                ? "bg-kh-gold text-kh-blue font-semibold"
+                                : "bg-transparent text-default-600 hover:bg-default-100"
+                                }`}
+                              onPress={() => setSelectedTab(key)}
+                            >
+                              <span className="flex items-center gap-2">
+                                <span className="truncate max-w-[180px]">
+                                  {game.name}
+                                </span>
+                                <span
+                                  className={`tabular-nums text-xs shrink-0 ${game.isCompleted ? "text-success" : "opacity-70"
+                                    }`}
+                                >
+                                  {game.percentage}%
+                                </span>
+                              </span>
+                            </Button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </Tab>
-                ))}
-              </Tabs>
+                  ))}
+                </div>
+                <div className="pt-2">
+                  {allGames
+                    .filter((g) => gameKey(g) === selectedTab)
+                    .map((game) => (
+                      <KHGameCard key={gameKey(game)} game={game} />
+                    ))}
+                </div>
+              </>
             ) : null}
           </motion.div>
         </motion.div>
