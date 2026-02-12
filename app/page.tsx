@@ -179,7 +179,7 @@ export default function Home() {
                           variant="light"
                           className={`min-h-0 px-2 py-1 font-medium text-sm rounded-lg transition-all ${
                             isSelected
-                              ? "bg-kh-gold text-kh-blue font-semibold"
+                              ? "bg-kh-gold text-kh-blue font-semibold hover:!bg-kh-gold hover:!text-kh-blue"
                               : "bg-transparent text-default-600 hover:bg-default-100"
                           }`}
                           onPress={() => setSelectedTab(key)}
