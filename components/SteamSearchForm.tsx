@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, InputGroup } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 
 import { SearchIcon } from "@/components/icons";
@@ -43,25 +43,20 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl">
-      <InputGroup
+      <Input
         aria-label="SteamID ou vanity URL"
         className="flex-1"
-        variant="secondary"
-      >
-        <InputGroup.Prefix>
-          <SearchIcon className="size-4 text-default-400" />
-        </InputGroup.Prefix>
-        <InputGroup.Input
-          placeholder="SteamID64 ou vanity URL (ex: donwaztok)"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          disabled={isLoading}
-          autoComplete="off"
-        />
-      </InputGroup>
+        placeholder="SteamID64 ou vanity URL (ex: donwaztok)"
+        value={value}
+        onValueChange={setValue}
+        isDisabled={isLoading}
+        autoComplete="off"
+        startContent={<SearchIcon className="size-4 text-default-400" />}
+      />
         <Button
         type="submit"
-        variant="primary"
+        variant="solid"
+        color="primary"
         isDisabled={!value.trim() || isLoading}
         className="sm:w-auto"
       >

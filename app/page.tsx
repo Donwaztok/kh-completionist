@@ -1,84 +1,15 @@
 "use client";
 
-import { Skeleton } from "@heroui/react";
-import { useCallback, useMemo, useState } from "react";
+import { Skeleton, Tab, Tabs } from "@heroui/react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { CollectionCard } from "@/components/CollectionCard";
-import { KHFiltersBar } from "@/components/KHFiltersBar";
+import { KHGameCard } from "@/components/KHGameCard";
 import { SteamSearchForm } from "@/components/SteamSearchForm";
 import { subtitle, title } from "@/components/primitives";
-import type { KHCollectionWithGames } from "@/lib/kingdom-hearts";
-import type { AchievementFilter, SortOption } from "@/types/steam";
+import type { KHCollectionWithGames, KHGameWithAchievements } from "@/lib/kingdom-hearts";
 
-const COLLECTION_ORDER: Record<string, number> = {
-  "1.5 + 2.5": 0,
-  "2.8": 1,
-  KH3: 2,
-};
-
-function filterAndSortCollections(
-  collections: KHCollectionWithGames[],
-  searchQuery: string,
-  filter: AchievementFilter,
-  sort: SortOption
-): KHCollectionWithGames[] {
-  let result = collections.map((col) => {
-    let games = [...col.games];
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      games = games.filter((g) => g.name.toLowerCase().includes(q));
-    }
-
-    switch (filter) {
-      case "complete":
-        games = games.filter((g) => g.percentage === 100);
-        break;
-      case "in_progress":
-        games = games.filter((g) => g.percentage > 0 && g.percentage < 100);
-        break;
-      case "none":
-        games = games.filter((g) => g.unlockedAchievements === 0);
-        break;
-      default:
-        break;
-    }
-
-    switch (sort) {
-      case "percentage_desc":
-        games.sort((a, b) => b.percentage - a.percentage);
-        break;
-      case "percentage_asc":
-        games.sort((a, b) => a.percentage - b.percentage);
-        break;
-      case "chronological":
-        games.sort((a, b) => {
-          const aIdx = col.games.findIndex((g) => g.appId === a.appId && g.name === a.name);
-          const bIdx = col.games.findIndex((g) => g.appId === b.appId && g.name === b.name);
-          return aIdx - bIdx;
-        });
-        break;
-      case "name_asc":
-        games.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "achievements_desc":
-        games.sort((a, b) => b.unlockedAchievements - a.unlockedAchievements);
-        break;
-      default:
-        break;
-    }
-
-    return { ...col, games };
-  });
-
-  if (sort === "chronological") {
-    result = result.sort(
-      (a, b) =>
-        (COLLECTION_ORDER[a.name] ?? 99) - (COLLECTION_ORDER[b.name] ?? 99)
-    );
-  }
-
-  return result;
+function gameKey(game: KHGameWithAchievements) {
+  return `${game.appId}-${game.name}`;
 }
 
 function GamesListSkeleton() {
@@ -90,7 +21,6 @@ function GamesListSkeleton() {
             <Skeleton className="h-8 w-48 rounded-lg" />
             <Skeleton className="h-6 w-16 rounded-lg" />
           </div>
-          <Skeleton className="h-2 w-full rounded-full" />
           <div className="space-y-4">
             {[1, 2].map((j) => (
               <div
@@ -115,14 +45,17 @@ export default function Home() {
   const [collections, setCollections] = useState<KHCollectionWithGames[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState<AchievementFilter>("all");
-  const [sort, setSort] = useState<SortOption>("percentage_desc");
-
-  const filteredCollections = useMemo(
-    () => filterAndSortCollections(collections, searchQuery, filter, sort),
-    [collections, searchQuery, filter, sort]
+  const allGames = useMemo(
+    () => collections.flatMap((c) => c.games),
+    [collections]
   );
+  const [selectedTab, setSelectedTab] = useState<string>("");
+
+  useEffect(() => {
+    if (allGames.length > 0 && !selectedTab) {
+      setSelectedTab(gameKey(allGames[0]));
+    }
+  }, [allGames, selectedTab]);
 
   const totalGames = useMemo(
     () => collections.reduce((acc, c) => acc + c.games.length, 0),
@@ -161,12 +94,6 @@ export default function Home() {
     }
   }, []);
 
-  const filteredGamesCount = useMemo(
-    () =>
-      filteredCollections.reduce((acc, c) => acc + c.games.length, 0),
-    [filteredCollections]
-  );
-
   return (
     <section className="flex flex-col gap-8 py-8 md:py-10">
       <div className="inline-block max-w-xl text-center">
@@ -174,7 +101,7 @@ export default function Home() {
         <h1 className={title({ color: "violet" })}>Steam Achievement Tracker</h1>
         <p className={subtitle({ class: "mt-4" })}>
           Insira seu SteamID ou vanity URL para ver suas conquistas da franquia
-          Kingdom Hearts, organizadas por coleção.
+          Kingdom Hearts, organizadas por jogo.
         </p>
       </div>
 
@@ -208,10 +135,7 @@ export default function Home() {
                     (collections.reduce(
                       (acc, c) =>
                         acc +
-                        c.games.reduce(
-                          (a, g) => a + g.unlockedAchievements,
-                          0
-                        ),
+                        c.games.reduce((a, g) => a + g.unlockedAchievements, 0),
                       0
                     ) /
                       Math.max(
@@ -219,7 +143,10 @@ export default function Home() {
                         collections.reduce(
                           (acc, c) =>
                             acc +
-                            c.games.reduce((a, g) => a + g.totalAchievements, 0),
+                            c.games.reduce(
+                              (a, g) => a + g.totalAchievements,
+                              0
+                            ),
                           0
                         )
                       )) *
@@ -231,31 +158,43 @@ export default function Home() {
             </div>
           </div>
 
-          <KHFiltersBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            filter={filter}
-            onFilterChange={setFilter}
-            sort={sort}
-            onSortChange={setSort}
-            totalGames={filteredGamesCount}
-          />
-
           <div className="space-y-6">
-            {filteredCollections.map((collection) =>
-              collection.games.length > 0 ? (
-                <CollectionCard
-                  key={collection.name}
-                  collection={collection}
-                />
-              ) : null
-            )}
-
-            {filteredCollections.every((c) => c.games.length === 0) && (
-              <p className="text-default-500 text-center py-8">
-                Nenhum jogo encontrado com os filtros aplicados.
-              </p>
-            )}
+            {allGames.length > 0 ? (
+              <Tabs
+                selectedKey={selectedTab}
+                onSelectionChange={(k) => setSelectedTab((k ?? "") as string)}
+                variant="underlined"
+                classNames={{
+                  tabList:
+                    "gap-2 overflow-x-auto flex-nowrap w-full [&::-webkit-scrollbar]:h-1",
+                  cursor: "bg-primary",
+                  tab: "px-0 h-12",
+                  tabContent: "group-data-[selected=true]:text-primary",
+                }}
+              >
+                {allGames.map((game) => (
+                  <Tab
+                    key={gameKey(game)}
+                    title={
+                      <span className="flex items-center gap-2">
+                        {game.name}
+                        <span
+                          className={`text-xs ${
+                            game.isCompleted ? "text-success" : "text-default-400"
+                          }`}
+                        >
+                          {game.percentage}%
+                        </span>
+                      </span>
+                    }
+                  >
+                    <div className="mt-6">
+                      <KHGameCard game={game} />
+                    </div>
+                  </Tab>
+                ))}
+              </Tabs>
+            ) : null}
           </div>
         </>
       )}

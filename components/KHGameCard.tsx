@@ -1,11 +1,18 @@
 "use client";
 
-import { Button, Card } from "@heroui/react";
+import { Card } from "@heroui/react";
 import clsx from "clsx";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { KHGameWithAchievements } from "@/lib/kingdom-hearts";
+import type { SteamAchievement } from "@/types/steam";
 
 import { AchievementList } from "./AchievementList";
+
+type AchievementFilterType = "all" | "unlocked" | "locked";
+type AchievementSortType = "unlocked_first" | "locked_first";
+
+const selectClass =
+  "rounded-lg border border-default-200 px-3 py-2 text-sm bg-default-100 dark:bg-default-50 text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-w-[160px]";
 
 export interface KHGameCardProps {
   game: KHGameWithAchievements;
@@ -66,8 +73,53 @@ function StatusBadge({ game }: { game: KHGameWithAchievements }) {
   );
 }
 
+function filterAndSortAchievements(
+  achievements: SteamAchievement[],
+  filter: AchievementFilterType,
+  sort: AchievementSortType
+): SteamAchievement[] {
+  let result = [...achievements];
+
+  switch (filter) {
+    case "unlocked":
+      result = result.filter((a) => a.unlocked);
+      break;
+    case "locked":
+      result = result.filter((a) => !a.unlocked);
+      break;
+    default:
+      break;
+  }
+
+  result.sort((a, b) => {
+    if (sort === "unlocked_first") return (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0);
+    return (a.unlocked ? 1 : 0) - (b.unlocked ? 1 : 0);
+  });
+
+  return result;
+}
+
 export function KHGameCard({ game }: KHGameCardProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [filter, setFilter] = useState<AchievementFilterType>("all");
+  const [sort, setSort] = useState<AchievementSortType>("unlocked_first");
+
+  const achievements = useMemo(
+    () =>
+      game.achievements.map((a) => ({
+        name: a.name,
+        description: a.description,
+        unlocked: a.unlocked,
+        unlockTime: a.unlockTime,
+        icon: a.icon,
+        icongray: a.icongray,
+      })),
+    [game.achievements]
+  );
+
+  const filteredAchievements = useMemo(
+    () => filterAndSortAchievements(achievements, filter, sort),
+    [achievements, filter, sort]
+  );
 
   return (
     <Card className="border border-divider">
@@ -94,29 +146,30 @@ export function KHGameCard({ game }: KHGameCardProps) {
           </div>
         </div>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mt-3"
-          onPress={() => setExpanded(!expanded)}
-        >
-          {expanded ? "Ocultar conquistas" : "Ver conquistas"}
-        </Button>
-
-        {expanded && (
-          <div className="mt-4 pt-4 border-t border-divider">
-            <AchievementList
-              achievements={game.achievements.map((a) => ({
-                name: a.name,
-                description: a.description,
-                unlocked: a.unlocked,
-                unlockTime: a.unlockTime,
-                icon: a.icon,
-                icongray: a.icongray,
-              }))}
-            />
+        <div className="mt-4 pt-4 border-t border-divider">
+          <div className="flex flex-wrap gap-2 mb-4">
+            <select
+              aria-label="Filtrar conquistas"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as AchievementFilterType)}
+              className={selectClass}
+            >
+              <option value="all">Todas</option>
+              <option value="unlocked">Somente liberadas</option>
+              <option value="locked">Somente não liberadas</option>
+            </select>
+            <select
+              aria-label="Ordenar conquistas"
+              value={sort}
+              onChange={(e) => setSort(e.target.value as AchievementSortType)}
+              className={selectClass}
+            >
+              <option value="unlocked_first">Conquistadas primeiro</option>
+              <option value="locked_first">Não conquistadas primeiro</option>
+            </select>
           </div>
-        )}
+          <AchievementList achievements={filteredAchievements} />
+        </div>
       </div>
     </Card>
   );

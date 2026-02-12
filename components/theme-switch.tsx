@@ -23,29 +23,17 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className }) => {
       aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}
       isSelected={isLight}
       onChange={() => setTheme(isLight ? "dark" : "light")}
+      thumbIcon={({ isSelected }) =>
+        isSelected || isSSR ? (
+          <SunFilledIcon size={22} />
+        ) : (
+          <MoonFilledIcon size={22} />
+        )
+      }
       className={clsx(
         "px-px transition-opacity hover:opacity-80 cursor-pointer",
         className,
       )}
-    >
-      {({ isSelected }) => (
-        <Switch.Control
-          className={clsx(
-            "w-auto h-auto bg-transparent rounded-lg flex items-center justify-center",
-            "group-data-[selected=true]:bg-transparent !text-default-500 pt-px px-0 mx-0",
-          )}
-        >
-          <Switch.Thumb className="bg-transparent shadow-none border-0">
-            <Switch.Icon>
-              {isSelected || isSSR ? (
-                <SunFilledIcon size={22} />
-              ) : (
-                <MoonFilledIcon size={22} />
-              )}
-            </Switch.Icon>
-          </Switch.Thumb>
-        </Switch.Control>
-      )}
-    </Switch>
+    />
   );
 };

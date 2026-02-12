@@ -26,7 +26,7 @@ export const KINGDOM_HEARTS_GAMES = [
     appId: 2552440,
     games: [
       { name: "Dream Drop Distance HD" },
-      { name: "0.2 Birth by Sleep – A Fragmentary Passage" },
+      { name: "0.2 Birth by Sleep" },
       { name: "χ Back Cover (filme)" },
     ],
   },

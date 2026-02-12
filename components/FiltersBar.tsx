@@ -1,6 +1,6 @@
 "use client";
 
-import { InputGroup } from "@heroui/react";
+import { Input } from "@heroui/react";
 
 import type { AchievementFilter, SortOption } from "@/types/steam";
 
@@ -45,20 +45,14 @@ export function FiltersBar({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-        <InputGroup
+        <Input
           aria-label="Buscar por nome do jogo"
           className="flex-1 max-w-md"
-          variant="secondary"
-        >
-          <InputGroup.Prefix>
-            <SearchIcon className="size-4 text-default-400" />
-          </InputGroup.Prefix>
-          <InputGroup.Input
-            placeholder="Buscar jogo..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-        </InputGroup>
+          placeholder="Buscar jogo..."
+          value={searchQuery}
+          onValueChange={onSearchChange}
+          startContent={<SearchIcon className="size-4 text-default-400" />}
+        />
 
         <div className="flex flex-wrap gap-2">
           <select

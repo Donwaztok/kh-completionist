@@ -49,7 +49,7 @@ export function AchievementList({ achievements }: AchievementListProps) {
               <Chip
                 size="sm"
                 color={achievement.unlocked ? "success" : "default"}
-                variant="soft"
+                variant="flat"
               >
                 {achievement.unlocked ? "✓" : "○"}
               </Chip>
