@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Skeleton } from "@heroui/react";
+import { Button, Chip, Skeleton } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -234,12 +234,20 @@ export default function Home() {
                                 <span className="truncate max-w-[180px]">
                                   {game.name}
                                 </span>
-                                <span
-                                  className={`tabular-nums text-xs shrink-0 ${game.isCompleted ? "text-success" : "opacity-70"
-                                    }`}
-                                >
-                                  {game.percentage}%
-                                </span>
+                                {game.isCompleted ? (
+                                  <Chip
+                                    size="sm"
+                                    color="success"
+                                    variant="solid"
+                                    className="h-5 min-w-0 px-1.5 text-[10px] shrink-0"
+                                  >
+                                    🏆 100%
+                                  </Chip>
+                                ) : (
+                                  <span className="tabular-nums text-xs shrink-0 opacity-70">
+                                    {game.percentage}%
+                                  </span>
+                                )}
                               </span>
                             </Button>
                           );

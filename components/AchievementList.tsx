@@ -31,7 +31,9 @@ export function AchievementList({ achievements }: AchievementListProps) {
       {achievements.map((achievement, index) => (
         <li
           key={`${achievement.name}-${index}`}
-          className="flex items-start gap-3 p-3 rounded-lg bg-default-100/50"
+          className={`flex items-start gap-3 p-3 rounded-lg ${
+            achievement.unlocked ? "bg-success/20" : "bg-default-100/50"
+          }`}
         >
           <div className="flex-shrink-0 mt-0.5">
             {achievement.icon || achievement.icongray ? (

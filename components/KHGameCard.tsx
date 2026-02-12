@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "@heroui/react";
+import { Card, Select, SelectItem } from "@heroui/react";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 import type { KHGameWithAchievements } from "@/lib/kingdom-hearts";
@@ -9,10 +9,19 @@ import type { SteamAchievement } from "@/types/steam";
 import { AchievementList } from "./AchievementList";
 
 type AchievementFilterType = "all" | "unlocked" | "locked";
-type AchievementSortType = "unlocked_first" | "locked_first";
+type AchievementSortType = "none" | "unlocked_first" | "locked_first";
 
-const selectClass =
-  "rounded-lg border border-default-200 px-3 py-2 text-sm bg-default-100 dark:bg-default-50 text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-w-[160px]";
+const FILTER_OPTIONS: { key: AchievementFilterType; label: string }[] = [
+  { key: "all", label: "Todas" },
+  { key: "unlocked", label: "Somente liberadas" },
+  { key: "locked", label: "Somente não liberadas" },
+];
+
+const SORT_OPTIONS: { key: AchievementSortType; label: string }[] = [
+  { key: "none", label: "Sem ordenação" },
+  { key: "unlocked_first", label: "Conquistadas primeiro" },
+  { key: "locked_first", label: "Não conquistadas primeiro" },
+];
 
 export interface KHGameCardProps {
   game: KHGameWithAchievements;
@@ -73,8 +82,10 @@ function StatusBadge({ game }: { game: KHGameWithAchievements }) {
   );
 }
 
+type AchievementWithIndex = SteamAchievement & { originalIndex: number };
+
 function filterAndSortAchievements(
-  achievements: SteamAchievement[],
+  achievements: AchievementWithIndex[],
   filter: AchievementFilterType,
   sort: AchievementSortType
 ): SteamAchievement[] {
@@ -91,27 +102,29 @@ function filterAndSortAchievements(
       break;
   }
 
-  result.sort((a, b) => {
-    if (sort === "unlocked_first") return (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0);
-    return (a.unlocked ? 1 : 0) - (b.unlocked ? 1 : 0);
-  });
+  if (sort !== "none") {
+    result.sort((a, b) => {
+      const primary =
+        sort === "unlocked_first"
+          ? (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0)
+          : (a.unlocked ? 1 : 0) - (b.unlocked ? 1 : 0);
+      if (primary !== 0) return primary;
+      return a.originalIndex - b.originalIndex;
+    });
+  }
 
-  return result;
+  return result.map(({ originalIndex: _, ...a }) => a);
 }
 
 export function KHGameCard({ game }: KHGameCardProps) {
   const [filter, setFilter] = useState<AchievementFilterType>("all");
-  const [sort, setSort] = useState<AchievementSortType>("unlocked_first");
+  const [sort, setSort] = useState<AchievementSortType>("none");
 
   const achievements = useMemo(
     () =>
-      game.achievements.map((a) => ({
-        name: a.name,
-        description: a.description,
-        unlocked: a.unlocked,
-        unlockTime: a.unlockTime,
-        icon: a.icon,
-        icongray: a.icongray,
+      game.achievements.map((a, i) => ({
+        ...a,
+        originalIndex: i,
       })),
     [game.achievements]
   );
@@ -147,26 +160,41 @@ export function KHGameCard({ game }: KHGameCardProps) {
         </div>
 
         <div className="mt-4 pt-4 border-t border-divider">
-          <div className="flex flex-wrap gap-2 mb-4">
-            <select
+          <div className="flex flex-nowrap gap-2 mb-4 w-fit">
+            <Select
               aria-label="Filtrar conquistas"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as AchievementFilterType)}
-              className={selectClass}
+              selectedKeys={[filter]}
+              onSelectionChange={(keys) => {
+                const value = Array.from(keys)[0];
+                setFilter((value as AchievementFilterType) ?? "all");
+              }}
+              size="sm"
+              fullWidth={false}
+              className="w-[180px]"
             >
-              <option value="all">Todas</option>
-              <option value="unlocked">Somente liberadas</option>
-              <option value="locked">Somente não liberadas</option>
-            </select>
-            <select
+              {FILTER_OPTIONS.map((opt) => (
+                <SelectItem key={opt.key}>{opt.label}</SelectItem>
+              ))}
+            </Select>
+            <Select
               aria-label="Ordenar conquistas"
-              value={sort}
-              onChange={(e) => setSort(e.target.value as AchievementSortType)}
-              className={selectClass}
+              placeholder="Ordenar conquistas"
+              selectedKeys={sort === "none" ? [] : [sort]}
+              onSelectionChange={(keys) => {
+                const value = Array.from(keys)[0];
+                setSort((value as AchievementSortType) ?? "none");
+              }}
+              onClear={() => setSort("none")}
+              isClearable
+              disallowEmptySelection={false}
+              size="sm"
+              fullWidth={false}
+              className="w-[180px]"
             >
-              <option value="unlocked_first">Conquistadas primeiro</option>
-              <option value="locked_first">Não conquistadas primeiro</option>
-            </select>
+              {SORT_OPTIONS.map((opt) => (
+                <SelectItem key={opt.key}>{opt.label}</SelectItem>
+              ))}
+            </Select>
           </div>
           <AchievementList achievements={filteredAchievements} />
         </div>
