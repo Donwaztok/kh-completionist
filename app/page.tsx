@@ -7,7 +7,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
 import { KHGameCard } from "@/components/KHGameCard";
 import { SteamSearchForm } from "@/components/SteamSearchForm";
-import { subtitle, title } from "@/components/primitives";
 import type {
   KHCollectionWithGames,
   KHGameWithAchievements,
@@ -112,16 +111,9 @@ export default function Home() {
         className="inline-block max-w-xl text-center mx-auto"
         variants={fadeInUp}
       >
-        <h1 className="font-kh text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-1">
-          Kingdom Hearts
+        <h1 className="font-kh text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+          KH Completionist
         </h1>
-        <h2 className={`${title({ color: "violet", size: "sm" })} font-kh`}>
-          Steam Achievement Tracker
-        </h2>
-        <p className={subtitle({ class: "mt-4 mx-auto" })}>
-          Enter your SteamID or vanity URL to see your Kingdom Hearts
-          franchise achievements, organized by game.
-        </p>
       </motion.div>
 
       <motion.div

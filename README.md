@@ -1,4 +1,4 @@
-# Kingdom Hearts Steam Achievement Tracker
+# KH Completionist
 
 Track your Kingdom Hearts franchise achievements on Steam. Enter your SteamID or vanity URL and see progress organized by collection (1.5+2.5, 2.8, KH3).
 

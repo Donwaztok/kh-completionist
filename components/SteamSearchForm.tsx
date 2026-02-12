@@ -1,9 +1,11 @@
 "use client";
 
+import NextLink from "next/link";
 import { Button, Input } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 
-import { SearchIcon } from "@/components/icons";
+import { GithubIcon, SearchIcon } from "@/components/icons";
+import { siteConfig } from "@/config/site";
 
 const STORAGE_KEY = "kh-steam-achievement-tracker-last-steamid";
 
@@ -51,17 +53,31 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
         onValueChange={setValue}
         isDisabled={isLoading}
         autoComplete="off"
-        startContent={<SearchIcon className="size-4 text-default-400" />}
       />
+      <div className="flex gap-2">
         <Button
-        type="submit"
-        variant="solid"
-        color="primary"
-        isDisabled={!value.trim() || isLoading}
-        className="sm:w-auto font-kh font-semibold"
-      >
-        {isLoading ? "Searching..." : "Search my achievements"}
-      </Button>
+          type="submit"
+          variant="solid"
+          color="primary"
+          isDisabled={!value.trim() || isLoading}
+          isLoading={isLoading}
+          isIconOnly
+          aria-label={isLoading ? "Searching..." : "Search"}
+        >
+          <SearchIcon className="size-5" />
+        </Button>
+        <Button
+          as={NextLink}
+          href={siteConfig.links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="flat"
+          isIconOnly
+          aria-label="GitHub"
+        >
+          <GithubIcon className="size-5" />
+        </Button>
+      </div>
     </form>
   );
 }
