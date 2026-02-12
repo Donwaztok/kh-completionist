@@ -3,9 +3,9 @@
 import type { IconSvgProps } from "@/types";
 
 /**
- * Símbolo do coração inspirado em Kingdom Hearts
- * Coração com topo em forma de coroa (duas pontas curvadas para dentro)
- * Design original, evoca a estética da franquia sem reproduzir o logo oficial
+ * Heart symbol inspired by Kingdom Hearts
+ * Heart with crown-shaped top (two inward curved tips)
+ * Original design, evokes franchise aesthetic without reproducing the official logo
  */
 export function KHLogo({
   size = 36,
@@ -23,7 +23,7 @@ export function KHLogo({
       className={className}
       {...props}
     >
-      {/* Coração com topo em coroa - duas pontas curvadas para dentro */}
+      {/* Heart with crown top - two inward curved tips */}
       <path
         d="M16 28
            C16 28 3 17 3 11

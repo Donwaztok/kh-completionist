@@ -6,7 +6,7 @@ import { getGameForAchievement } from "@/config/achievement-mapping";
  * https://store.steampowered.com/app/2552440 - 2.8 Final Chapter Prologue
  * https://store.steampowered.com/app/2552450 - KH3 + Re Mind (DLC)
  *
- * Coleções com sub-jogos individuais (mesmo app, progresso compartilhado).
+ * Collections with individual sub-games (same app, shared progress).
  */
 export const KINGDOM_HEARTS_GAMES = [
   {
@@ -27,7 +27,7 @@ export const KINGDOM_HEARTS_GAMES = [
     games: [
       { name: "Dream Drop Distance HD" },
       { name: "0.2 Birth by Sleep – A Fragmentary Passage" },
-      { name: "χ Back Cover (filme)" },
+      { name: "χ Back Cover (movie)" },
     ],
   },
   {
@@ -98,7 +98,7 @@ interface SchemaAchievement {
 function getApiKey(): string {
   const key = process.env.STEAM_API_KEY;
   if (!key) {
-    throw new Error("STEAM_API_KEY não configurada");
+    throw new Error("STEAM_API_KEY not configured");
   }
   return key;
 }
@@ -108,7 +108,7 @@ async function fetchFromSteam<T>(url: string): Promise<T> {
   const data = await res.json();
 
   if (res.status === 403) {
-    throw new Error("Perfil privado ou inacessível");
+    throw new Error("Private or inaccessible profile");
   }
 
   return data;

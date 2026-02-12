@@ -14,7 +14,7 @@ export const fontMono = FontMono({
   variable: "--font-mono",
 });
 
-/** Fonte temática Kingdom Hearts - estilo medieval/fantasia */
+/** Kingdom Hearts thematic font - medieval/fantasy style */
 export const fontKH = Cinzel({
   subsets: ["latin"],
   variable: "--font-kh",

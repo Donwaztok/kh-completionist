@@ -6,7 +6,7 @@
 @theme {
   --font-sans: "font", sans-serif;
   --font-mono: "monospace", monospace;
-  /* Kingdom Hearts - paleta temática */
+  /* Kingdom Hearts - thematic palette */
   --kh-gold: #d4af37;
   --kh-gold-light: #f4e4bc;
   --kh-gold-dark: #8b7355;
@@ -27,7 +27,7 @@
     #030712 100%
   );
   position: relative;
-  overflow-x: hidden; /* evita scroll horizontal, permite vertical */
+  overflow-x: hidden; /* prevents horizontal scroll, allows vertical */
 }
 
 .kh-starry-bg::before {

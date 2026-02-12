@@ -8,21 +8,21 @@ const STEAM_API_BASE = "https://api.steampowered.com";
 function getApiKey(): string {
   const key = process.env.STEAM_API_KEY;
   if (!key) {
-    throw new Error("STEAM_API_KEY não configurada");
+    throw new Error("STEAM_API_KEY not configured");
   }
   return key;
 }
 
 /**
  * Resolve vanity URL ou valida SteamID64
- * SteamID64 são números de 17 dígitos
+ * SteamID64 are 17-digit numbers
  */
 export async function resolveSteamId(
   input: string
 ): Promise<string | null> {
   const trimmed = input.trim();
 
-  // Se for numérico e 17 dígitos, é SteamID64
+  // If numeric and 17 digits, it's SteamID64
   if (/^\d{17}$/.test(trimmed)) {
     return trimmed;
   }
@@ -34,7 +34,7 @@ export async function resolveSteamId(
   const data = await res.json();
 
   if (res.status === 403) {
-    throw new Error("Perfil privado ou inacessível");
+    throw new Error("Private or inaccessible profile");
   }
 
   if (data?.response?.steamid) {
@@ -65,7 +65,7 @@ export async function fetchOwnedGames(steamId: string): Promise<OwnedGame[]> {
   const data: OwnedGamesResponse = await res.json();
 
   if (res.status === 403) {
-    throw new Error("Perfil privado ou inacessível");
+    throw new Error("Private or inaccessible profile");
   }
 
   if (!data?.response?.games) {

@@ -1,61 +1,61 @@
 # Kingdom Hearts Steam Achievement Tracker
 
-Rastreie suas conquistas da franquia Kingdom Hearts na Steam. Insira seu SteamID ou vanity URL e veja o progresso organizado por coleção (1.5+2.5, 2.8, KH3).
+Track your Kingdom Hearts franchise achievements on Steam. Enter your SteamID or vanity URL and see progress organized by collection (1.5+2.5, 2.8, KH3).
 
-## Tecnologias
+## Tech Stack
 
 - Next.js 16 (App Router)
 - TypeScript
-- HeroUI (biblioteca de componentes)
+- HeroUI (component library)
 - Tailwind CSS
 - Steam Web API
 
-## Funcionalidades
+## Features
 
-- 🔍 Busca por SteamID64 ou vanity URL
-- 📦 Coleções: 1.5+2.5, 2.8, KH3
-- 📊 Jogos Kingdom Hearts com conquistas
-- 🏆 Badges: 100% | Em progresso | Não iniciado
-- 📈 Barras de progresso por jogo e por coleção
-- 🔎 Filtros: Todos | Apenas 100% | Apenas incompletos | Apenas não iniciados
-- ↕ Ordenação: Maior/menor percentual, Ordem cronológica, A-Z
-- 💾 Último SteamID salvo no localStorage
-- 🌓 Modo Dark/Light
-- 📱 Layout responsivo
+- 🔍 Search by SteamID64 or vanity URL
+- 📦 Collections: 1.5+2.5, 2.8, KH3
+- 📊 Kingdom Hearts games with achievements
+- 🏆 Badges: 100% | In progress | Not started
+- 📈 Progress bars per game and per collection
+- 🔎 Per-game achievement filters: All | Unlocked only | Locked only
+- ↕ Per-game sorting: Unlocked first | Locked first
+- 💾 Last SteamID saved in localStorage
+- 🌓 Dark theme
+- 📱 Responsive layout
 
-## Configuração
+## Setup
 
-### 1. Obter chave da Steam API
+### 1. Get Steam API key
 
-Acesse [https://steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey) e crie uma chave de API.
+Visit [https://steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey) and create an API key.
 
-### 2. Variáveis de ambiente
+### 2. Environment variables
 
-Copie o arquivo de exemplo e configure:
+Copy the example file and configure:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Edite `.env.local` e adicione sua chave:
+Edit `.env.local` and add your key:
 
 ```
-STEAM_API_KEY=sua_chave_aqui
+STEAM_API_KEY=your_key_here
 ```
 
-### 3. Instalação
+### 3. Installation
 
 ```bash
 npm install
 ```
 
-### 4. Desenvolvimento
+### 4. Development
 
 ```bash
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000)
 
 ### 5. Build
 
@@ -63,36 +63,42 @@ Acesse [http://localhost:3000](http://localhost:3000)
 npm run build
 ```
 
-### 6. Deploy na Vercel
+### 6. Deploy to Vercel
 
-1. Faça push do projeto para o GitHub
-2. Importe o projeto na [Vercel](https://vercel.com)
-3. Configure a variável de ambiente `STEAM_API_KEY` no painel da Vercel
-4. Deploy automático
+1. Push the project to GitHub
+2. Import the project on [Vercel](https://vercel.com)
+3. Set the `STEAM_API_KEY` environment variable in the Vercel dashboard
+4. Automatic deploy
 
-## Estrutura do projeto
+## Project structure
 
 ```
 app/
-  api/kingdom-hearts/route.ts   # API route handler (jogos KH)
-  page.tsx                       # Página principal
+  api/kingdom-hearts/route.ts   # API route (KH achievements)
+  api/steam/route.ts            # API route (generic Steam)
+  page.tsx                      # Main page
   layout.tsx
+  providers.tsx
 components/
-  SteamSearchForm.tsx            # Formulário de busca
-  CollectionCard.tsx             # Card de coleção
-  KHGameCard.tsx                 # Card de jogo KH
-  KHFiltersBar.tsx               # Filtros e ordenação
-  AchievementList.tsx            # Lista de conquistas
+  SteamSearchForm.tsx           # Search form
+  Dashboard.tsx                 # Stats sidebar
+  KHGameCard.tsx                # Game card with achievement filters
+  AchievementList.tsx           # Achievement list
+  navbar.tsx
+config/
+  achievement-mapping.ts       # Achievement → game mapping
+  fonts.ts
+  site.ts
 lib/
-  kingdom-hearts.ts              # AppIDs fixos + fetch KH
-  steam.ts                       # Resolve SteamID
+  kingdom-hearts.ts             # AppIDs + KH fetch logic
+  steam.ts                      # SteamID resolver
 types/
-  steam.ts                       # Tipos TypeScript
+  steam.ts
 ```
 
 ## API
 
-A rota `/api/kingdom-hearts?steamid=SEU_STEAMID` retorna:
+The route `/api/kingdom-hearts?steamid=YOUR_STEAMID` returns:
 
 ```json
 {
@@ -101,7 +107,7 @@ A rota `/api/kingdom-hearts?steamid=SEU_STEAMID` retorna:
       "name": "1.5 + 2.5",
       "games": [
         {
-          "name": "Kingdom Hearts HD 1.5 + 2.5 ReMIX",
+          "name": "Kingdom Hearts Final Mix",
           "appId": 2552430,
           "totalAchievements": 56,
           "unlockedAchievements": 32,
@@ -111,29 +117,24 @@ A rota `/api/kingdom-hearts?steamid=SEU_STEAMID` retorna:
         }
       ]
     }
-  ]
+  ],
+  "player": { "personaname": "...", "avatarfull": "...", "profileurl": "..." }
 }
 ```
 
-## Jogos suportados
+## Supported games
 
 - **1.5 + 2.5**: Kingdom Hearts Final Mix, Re:Chain of Memories, Kingdom Hearts II Final Mix, 358/2 Days (cutscenes), Birth by Sleep Final Mix, Re:Coded (cutscenes)
-- **2.8**: Dream Drop Distance HD, 0.2 Birth by Sleep – A Fragmentary Passage, χ Back Cover (filme)
+- **2.8**: Dream Drop Distance HD, 0.2 Birth by Sleep – A Fragmentary Passage, χ Back Cover (movie)
 - **KH3**: Kingdom Hearts III, Re Mind (DLC)
 
-## Mapeamento de conquistas
+## Achievement mapping
 
-As conquistas são mapeadas para jogos individuais dentro de cada coleção. Para atualizar o mapeamento (após mudanças na Steam):
+Achievements are mapped to individual games within each collection in `config/achievement-mapping.ts`. The mapping is maintained manually. When Steam adds or changes achievements, update the mapping file accordingly.
 
-```bash
-npm run build-achievement-mapping
-```
+## Notes
 
-Isso busca o schema da API Steam e regenera `config/achievement-mapping.ts`.
-
-## Observações
-
-- O perfil Steam deve estar público para que as conquistas sejam acessíveis
-- São buscados apenas jogos Kingdom Hearts (AppIDs hardcoded)
-- Respostas cacheadas por 5 minutos
-- Máximo 4 requisições paralelas
+- Steam profile must be public for achievements to be accessible
+- Only Kingdom Hearts games are fetched (AppIDs hardcoded)
+- Responses cached for 5 minutes
+- Max 4 parallel requests

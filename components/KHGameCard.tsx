@@ -12,15 +12,15 @@ type AchievementFilterType = "all" | "unlocked" | "locked";
 type AchievementSortType = "none" | "unlocked_first" | "locked_first";
 
 const FILTER_OPTIONS: { key: AchievementFilterType; label: string }[] = [
-  { key: "all", label: "Todas" },
-  { key: "unlocked", label: "Somente liberadas" },
-  { key: "locked", label: "Somente não liberadas" },
+  { key: "all", label: "All" },
+  { key: "unlocked", label: "Unlocked only" },
+  { key: "locked", label: "Locked only" },
 ];
 
 const SORT_OPTIONS: { key: AchievementSortType; label: string }[] = [
-  { key: "none", label: "Sem ordenação" },
-  { key: "unlocked_first", label: "Conquistadas primeiro" },
-  { key: "locked_first", label: "Não conquistadas primeiro" },
+  { key: "none", label: "No sorting" },
+  { key: "unlocked_first", label: "Unlocked first" },
+  { key: "locked_first", label: "Locked first" },
 ];
 
 export interface KHGameCardProps {
@@ -71,13 +71,13 @@ function StatusBadge({ game }: { game: KHGameWithAchievements }) {
   if (game.unlockedAchievements > 0) {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
-        🔄 Em progresso
+        🔄 In progress
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-default-200 text-default-600">
-      ❌ Não iniciado
+      ❌ Not started
     </span>
   );
 }
@@ -146,7 +146,7 @@ export function KHGameCard({ game }: KHGameCardProps) {
               <StatusBadge game={game} />
             </div>
             <p className="text-sm text-default-500 mt-0.5">
-              {game.unlockedAchievements} / {game.totalAchievements} conquistas
+              {game.unlockedAchievements} / {game.totalAchievements} achievements
             </p>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
@@ -162,7 +162,7 @@ export function KHGameCard({ game }: KHGameCardProps) {
         <div className="mt-3 pt-3 border-t border-divider">
           <div className="flex flex-nowrap gap-2 mb-3 w-fit">
             <Select
-              aria-label="Filtrar conquistas"
+              aria-label="Filter achievements"
               selectedKeys={[filter]}
               onSelectionChange={(keys) => {
                 const value = Array.from(keys)[0];
@@ -177,8 +177,8 @@ export function KHGameCard({ game }: KHGameCardProps) {
               ))}
             </Select>
             <Select
-              aria-label="Ordenar conquistas"
-              placeholder="Ordenar conquistas"
+              aria-label="Sort achievements"
+              placeholder="Sort achievements"
               selectedKeys={sort === "none" ? [] : [sort]}
               onSelectionChange={(keys) => {
                 const value = Array.from(keys)[0];

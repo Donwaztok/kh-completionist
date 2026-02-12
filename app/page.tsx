@@ -87,13 +87,13 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Erro ao buscar conquistas");
+        throw new Error(data.error || "Error fetching achievements");
       }
 
       setCollections(data.collections ?? []);
       setPlayer(data.player ?? null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro desconhecido");
+      setError(err instanceof Error ? err.message : "Unknown error");
       setCollections([]);
       setPlayer(null);
     } finally {
@@ -119,8 +119,8 @@ export default function Home() {
           Steam Achievement Tracker
         </h2>
         <p className={subtitle({ class: "mt-4 mx-auto" })}>
-          Insira seu SteamID ou vanity URL para ver suas conquistas da franquia
-          Kingdom Hearts, organizadas por jogo.
+          Enter your SteamID or vanity URL to see your Kingdom Hearts
+          franchise achievements, organized by game.
         </p>
       </motion.div>
 
@@ -237,7 +237,7 @@ export default function Home() {
           initial="initial"
           animate="animate"
         >
-          Digite seu SteamID ou vanity URL e clique em Buscar para começar.
+          Enter your SteamID or vanity URL and click Search to get started.
         </motion.p>
       )}
     </motion.section>

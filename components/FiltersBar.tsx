@@ -17,17 +17,17 @@ export interface FiltersBarProps {
 }
 
 const FILTER_OPTIONS: { value: AchievementFilter; label: string }[] = [
-  { value: "all", label: "Todos" },
+  { value: "all", label: "All" },
   { value: "complete", label: "100%" },
-  { value: "in_progress", label: "Em progresso" },
-  { value: "none", label: "0 conquistas" },
+  { value: "in_progress", label: "In progress" },
+  { value: "none", label: "0 achievements" },
 ];
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: "percentage_desc", label: "Maior percentual" },
-  { value: "percentage_asc", label: "Menor percentual" },
+  { value: "percentage_desc", label: "Highest percentage" },
+  { value: "percentage_asc", label: "Lowest percentage" },
   { value: "name_asc", label: "A-Z" },
-  { value: "achievements_desc", label: "Mais conquistas" },
+  { value: "achievements_desc", label: "Most achievements" },
 ];
 
 const selectClass =
@@ -46,9 +46,9 @@ export function FiltersBar({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
         <Input
-          aria-label="Buscar por nome do jogo"
+          aria-label="Search by game name"
           className="flex-1 max-w-md"
-          placeholder="Buscar jogo..."
+          placeholder="Search game..."
           value={searchQuery}
           onValueChange={onSearchChange}
           startContent={<SearchIcon className="size-4 text-default-400" />}
@@ -56,7 +56,7 @@ export function FiltersBar({
 
         <div className="flex flex-wrap gap-2">
           <select
-            aria-label="Filtro"
+            aria-label="Filter"
             value={filter}
             onChange={(e) => onFilterChange(e.target.value as AchievementFilter)}
             className={selectClass}
@@ -69,7 +69,7 @@ export function FiltersBar({
           </select>
 
           <select
-            aria-label="Ordenação"
+            aria-label="Sort"
             value={sort}
             onChange={(e) => onSortChange(e.target.value as SortOption)}
             className={selectClass}
@@ -84,7 +84,7 @@ export function FiltersBar({
       </div>
 
       <p className="text-sm text-default-500">
-        {totalGames} jogo{totalGames !== 1 ? "s" : ""} com conquistas
+        {totalGames} game{totalGames !== 1 ? "s" : ""} with achievements
       </p>
     </div>
   );

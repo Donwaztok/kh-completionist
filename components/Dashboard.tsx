@@ -99,7 +99,7 @@ function LastUnlockedAchievement({
   unlockTime: number;
 }) {
   const date = new Date(unlockTime * 1000);
-  const formatted = date.toLocaleDateString("pt-BR", {
+  const formatted = date.toLocaleDateString("en-US", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -204,7 +204,7 @@ export function Dashboard({ collections, player }: DashboardProps) {
         animate: { transition: { staggerChildren: 0.06 } },
       }}
     >
-      {/* Player card (se houver dados) */}
+      {/* Player card (if data available) */}
       {player && (
         <motion.div variants={fadeInUp}>
           <Card className="border border-kh-gold/30 bg-kh-blue-light/60 backdrop-blur-sm overflow-hidden">
@@ -227,7 +227,7 @@ export function Dashboard({ collections, player }: DashboardProps) {
                   rel="noopener noreferrer"
                   className="text-xs text-kh-gold hover:underline truncate block"
                 >
-                  Perfil Steam →
+                  Steam Profile →
                 </a>
               </div>
               <Chip
@@ -241,41 +241,41 @@ export function Dashboard({ collections, player }: DashboardProps) {
         </motion.div>
       )}
 
-      {/* Stats - compactos em coluna */}
+      {/* Stats - compact column layout */}
       <motion.div className="grid grid-cols-2 gap-2" variants={fadeInUp}>
         <StatCard
-          label="Progresso"
+          label="Progress"
           value={`${stats.overallPercent}%`}
           subValue={`${stats.unlockedAchievements}/${stats.totalAchievements}`}
           icon="📊"
           color="primary"
         />
         <StatCard
-          label="Completos"
+          label="Completed"
           value={stats.completedCount}
-          subValue={`de ${stats.totalGames}`}
+          subValue={`of ${stats.totalGames}`}
           icon="🏆"
           color="success"
         />
         <StatCard
-          label="Em progresso"
+          label="In progress"
           value={stats.inProgressCount}
-          subValue="jogos"
+          subValue="games"
           icon="🔄"
         />
         <StatCard
-          label="Não iniciados"
+          label="Not started"
           value={stats.notStartedCount}
-          subValue="jogos"
+          subValue="games"
           icon="📭"
         />
       </motion.div>
 
-      {/* Progresso por coleção */}
+      {/* Progress by collection */}
       <motion.div variants={fadeInUp}>
         <Card className="border border-divider p-3">
           <h4 className="font-kh font-semibold text-sm mb-3">
-            Por coleção
+            By collection
           </h4>
           <div className="space-y-3">
             {collectionStats.map(({ collection, percent }) => (
@@ -289,12 +289,12 @@ export function Dashboard({ collections, player }: DashboardProps) {
         </Card>
       </motion.div>
 
-      {/* Próximos alvos */}
+      {/* Next targets */}
       {nextTargets.length > 0 && (
         <motion.div variants={fadeInUp}>
           <Card className="border border-divider p-3">
             <h4 className="font-kh font-semibold text-sm mb-2">
-              Próximos alvos
+              Next targets
             </h4>
             <div className="space-y-1.5">
               {nextTargets.map((game) => (
@@ -315,11 +315,11 @@ export function Dashboard({ collections, player }: DashboardProps) {
         </motion.div>
       )}
 
-      {/* Últimas conquistas */}
+      {/* Recent achievements */}
       <motion.div variants={fadeInUp}>
         <Card className="border border-divider p-3">
           <h4 className="font-kh font-semibold text-sm mb-2">
-            Últimas conquistas
+            Recent achievements
           </h4>
           {lastUnlocked.length > 0 ? (
             <div className="space-y-0.5 divide-y divide-divider/30 max-h-36 overflow-y-auto">
@@ -334,7 +334,7 @@ export function Dashboard({ collections, player }: DashboardProps) {
             </div>
           ) : (
             <p className="text-default-500 text-xs py-2">
-              Nenhuma ainda.
+              None yet.
             </p>
           )}
         </Card>

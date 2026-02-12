@@ -20,7 +20,7 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) setValue(saved);
     } catch {
-      // localStorage pode não estar disponível
+      // localStorage may not be available
     }
   }, []);
 
@@ -44,9 +44,9 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
   return (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl">
       <Input
-        aria-label="SteamID ou vanity URL"
+        aria-label="SteamID or vanity URL"
         className="flex-1"
-        placeholder="SteamID64 ou vanity URL (ex: donwaztok)"
+        placeholder="SteamID64 or vanity URL (e.g. donwaztok)"
         value={value}
         onValueChange={setValue}
         isDisabled={isLoading}
@@ -60,7 +60,7 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
         isDisabled={!value.trim() || isLoading}
         className="sm:w-auto font-kh font-semibold"
       >
-        {isLoading ? "Buscando..." : "Buscar minhas conquistas"}
+        {isLoading ? "Searching..." : "Search my achievements"}
       </Button>
     </form>
   );

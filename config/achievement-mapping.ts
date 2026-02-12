@@ -1,7 +1,6 @@
 /**
- * Mapeamento de conquistas (apiname) para jogos individuais.
- * Gerado automaticamente por: npm run build-achievement-mapping
- * Última atualização: 2026-02-12
+ * Achievement mapping (apiname) to individual games.
+ * Manually maintained. Last updated: 2026-02-12
  */
 
 export type GameKey =
@@ -13,7 +12,7 @@ export type GameKey =
   | "Re:Coded (cutscenes)"
   | "Dream Drop Distance HD"
   | "0.2 Birth by Sleep – A Fragmentary Passage"
-  | "χ Back Cover (filme)"
+  | "χ Back Cover (movie)"
   | "Kingdom Hearts III"
   | "Re Mind (DLC)";
 
@@ -343,7 +342,7 @@ export const MAPPING_KH3: Record<string, GameKey> = {
   "ACH_51": "Re Mind (DLC)"
 };
 
-/** Fallback heurístico quando apiname não está no mapeamento */
+/** Fallback heuristic when apiname is not in the mapping */
 export function guessGameFromAchievement(
   appId: number,
   apiname: string,
@@ -367,7 +366,7 @@ export function guessGameFromAchievement(
     if (/fragmentary|0\.2|aqua.*passage| Episode 0/i.test(name + desc) || /^02_|^0_2|fragmentary/i.test(api))
       return "0.2 Birth by Sleep – A Fragmentary Passage";
     if (/back cover|foreteller|keyblade war|χ |chi back|braig|luxu|master of masters/i.test(name + desc) || /backcover|back_cover|chirithy|foreteller/i.test(api))
-      return "χ Back Cover (filme)";
+      return "χ Back Cover (movie)";
     return "Dream Drop Distance HD";
   }
   if (appId === 2552450) {

@@ -6,7 +6,7 @@ import {
 } from "@/lib/steam";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 300; // 5 minutos
+export const revalidate = 300; // 5 minutes
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   if (!steamIdInput?.trim()) {
     return NextResponse.json(
-      { error: "SteamID ou vanity URL é obrigatório" },
+      { error: "SteamID or vanity URL is required" },
       { status: 400 }
     );
   }
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     if (!steamId) {
       return NextResponse.json(
-        { error: "SteamID ou vanity URL inválido. verifique e tente novamente." },
+        { error: "Invalid SteamID or vanity URL. Check and try again." },
         { status: 404 }
       );
     }
@@ -40,11 +40,11 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Erro desconhecido";
+    const message = err instanceof Error ? err.message : "Unknown error";
 
     if (message.includes("STEAM_API_KEY")) {
       return NextResponse.json(
-        { error: "API não configurada. Configure STEAM_API_KEY." },
+        { error: "API not configured. Set STEAM_API_KEY." },
         { status: 503 }
       );
     }
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Perfil privado ou inacessível. Torne seu perfil público nas configurações do Steam.",
+            "Private or inaccessible profile. Make your profile public in Steam settings.",
         },
         { status: 403 }
       );
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
     console.error("[Steam API Error]", err);
 
     return NextResponse.json(
-      { error: "Erro ao buscar conquistas. Tente novamente mais tarde." },
+      { error: "Error fetching achievements. Try again later." },
       { status: 500 }
     );
   }

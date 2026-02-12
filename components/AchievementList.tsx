@@ -9,7 +9,7 @@ export interface AchievementListProps {
 function formatUnlockTime(timestamp?: number): string {
   if (!timestamp) return "";
   const date = new Date(timestamp * 1000);
-  return date.toLocaleDateString("pt-BR", {
+  return date.toLocaleDateString("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -20,7 +20,7 @@ export function AchievementList({ achievements }: AchievementListProps) {
   if (achievements.length === 0) {
     return (
       <p className="text-sm text-default-500 py-2">
-        Nenhuma conquista disponível.
+        No achievements available.
       </p>
     );
   }

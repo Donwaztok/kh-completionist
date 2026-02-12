@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "KH Steam Achievement Tracker",
-  description: "Rastreie suas conquistas Kingdom Hearts na Steam. Insira seu SteamID e veja o progresso por coleção (1.5+2.5, 2.8, KH3).",
+  description: "Track your Kingdom Hearts achievements on Steam. Enter your SteamID and see progress by collection (1.5+2.5, 2.8, KH3).",
   navItems: [],
   links: {
     github: "https://github.com/heroui-inc/heroui",
