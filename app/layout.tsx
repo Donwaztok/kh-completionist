@@ -4,9 +4,10 @@ import { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 
 import { fontKH, fontSans } from "@/config/fonts";
-import { GoogleAdsense } from "@/components/GoogleAdsense";
 
 import { Providers } from "./providers";
+
+const ADSENSE_PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://khcompletionist.vercel.app"),
@@ -62,7 +63,15 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <head />
+      <head>
+        {ADSENSE_PUBLISHER_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+            crossOrigin="anonymous"
+          ></script>
+        )}
+      </head>
       <body
         className={clsx(
           "min-h-screen text-foreground bg-background font-sans antialiased",
@@ -84,7 +93,6 @@ export default function RootLayout({
             </main>
           </div>
         </Providers>
-        <GoogleAdsense />
         <Analytics />
       </body>
     </html>
