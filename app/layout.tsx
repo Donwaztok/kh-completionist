@@ -3,16 +3,44 @@ import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 
 import { fontKH, fontSans } from "@/config/fonts";
-import { siteConfig } from "@/config/site";
 
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://khcompletionist.vercel.app"),
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: "KH Completionist – Kingdom Hearts Steam Achievement Tracker",
+    template: "%s | KH Completionist",
   },
-  description: siteConfig.description,
+  description:
+    "Track your progress to 100% in Kingdom Hearts Steam achievements. Separate KH1, KH2, KH3 and ReMind DLC achievements by individual game.",
+  keywords: [
+    "Kingdom Hearts Steam achievements",
+    "KH1 achievements Steam",
+    "KH2 Final Mix achievements",
+    "KH3 achievements Steam",
+    "KH3 ReMind DLC achievements",
+    "Kingdom Hearts 100% tracker",
+    "Steam Kingdom Hearts completion",
+  ],
+  openGraph: {
+    title: "KH Completionist – Kingdom Hearts Steam Achievement Tracker",
+    description:
+      "Track your Kingdom Hearts Steam achievements individually by game and complete the saga 100%.",
+    url: "https://khcompletionist.vercel.app",
+    siteName: "KH Completionist",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KH Completionist",
+    description:
+      "Track your progress to 100% across the Kingdom Hearts saga on Steam.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/favicon.ico",
   },

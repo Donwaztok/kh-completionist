@@ -229,6 +229,40 @@ export default function Home() {
           Enter your SteamID or vanity URL and click Search to get started.
         </motion.p>
       )}
+
+      <section
+        className="mt-12 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
+        aria-label="About KH Completionist"
+      >
+        <h2 className="text-lg font-semibold text-foreground">
+          About Kingdom Hearts Steam Achievement Tracker
+        </h2>
+        <p>
+          KH Completionist is a Kingdom Hearts Steam achievement tracker that
+          helps you reach 100% completion across the entire saga. Unlike the
+          Steam client, which groups achievements by collection (1.5+2.5, 2.8,
+          KH3), this tool separates achievements by individual game.
+        </p>
+        <h3 className="text-base font-medium text-foreground">
+          Track Each Game Individually
+        </h3>
+        <p>
+          Steam bundles multiple games into single collections. KH Completionist
+          breaks down your KH1 Final Mix achievements, KH2 Final Mix
+          achievements, KH3 achievements, and KH3 ReMind DLC achievements so you
+          can complete each title individually. Pursue Kingdom Hearts 100%
+          completion game by game.
+        </p>
+        <h3 className="text-base font-medium text-foreground">
+          Games Included
+        </h3>
+        <p>
+          The tracker covers all Kingdom Hearts titles on Steam: KH1 Final Mix,
+          KH2 Final Mix, Birth by Sleep, Dream Drop Distance, and KH3 with its
+          ReMind DLC. Enter your SteamID to see your Kingdom Hearts Steam
+          achievements and track progress toward full completion.
+        </p>
+      </section>
     </motion.section>
   );
 }
