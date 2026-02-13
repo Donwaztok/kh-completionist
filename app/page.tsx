@@ -30,31 +30,141 @@ function gameKey(game: KHGameWithAchievements) {
   return `${game.appId}-${game.name}`;
 }
 
+/** Classe para garantir visibilidade do Skeleton HeroUI em dark mode */
+const SKELETON_CLASS = "!bg-default-300";
+
 function GamesListSkeleton() {
   return (
-    <div className="space-y-6">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="rounded-lg border border-divider p-6 space-y-4">
-          <div className="flex justify-between items-start gap-4">
-            <Skeleton className="h-8 w-48 rounded-lg" />
-            <Skeleton className="h-6 w-16 rounded-lg" />
-          </div>
-          <div className="space-y-4">
-            {[1, 2].map((j) => (
-              <div
-                key={j}
-                className="rounded-lg border border-divider p-4 space-y-3"
-              >
-                <div className="flex justify-between items-start gap-4">
-                  <Skeleton className="h-6 w-3/4 rounded-lg" />
-                  <Skeleton className="h-8 w-16 rounded-lg" />
-                </div>
-                <Skeleton className="h-2 w-full rounded-full" />
-              </div>
+    <div className="flex flex-col gap-4">
+      {/* Barra de tabs das collections + jogos */}
+      <div className="flex flex-col gap-1.5 items-start w-full">
+        <div className="flex flex-row items-center gap-3 p-1.5 rounded-xl bg-default-100 dark:bg-default-100/10 border border-default-200/50 w-full">
+          <Skeleton className={`h-3.5 w-16 rounded-md shrink-0 ${SKELETON_CLASS}`} />
+          <div className="flex flex-wrap gap-1">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className={`h-8 w-24 rounded-lg ${SKELETON_CLASS}`} />
             ))}
           </div>
         </div>
-      ))}
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        {/* Dashboard sidebar */}
+        <aside className="w-full lg:w-72 shrink-0 space-y-4">
+          {/* Player card skeleton */}
+          <div className="rounded-xl border border-kh-gold/30 bg-kh-blue-light/20 overflow-hidden">
+            <div className="p-3 flex flex-row items-center gap-3">
+              <Skeleton className={`h-12 w-12 rounded-full shrink-0 ${SKELETON_CLASS}`} />
+              <div className="min-w-0 flex-1 space-y-2">
+                <Skeleton className={`h-4 w-32 rounded-md ${SKELETON_CLASS}`} />
+                <Skeleton className={`h-3 w-24 rounded-md ${SKELETON_CLASS}`} />
+              </div>
+              <Skeleton className={`h-6 w-12 rounded-lg shrink-0 ${SKELETON_CLASS}`} />
+            </div>
+          </div>
+
+          {/* Stat cards */}
+          <div className="grid grid-cols-2 gap-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="rounded-lg border p-2.5 min-h-[70px] flex flex-col justify-between bg-default-100/50"
+              >
+                <div className="flex items-start justify-between gap-1">
+                  <Skeleton className={`h-5 w-5 rounded ${SKELETON_CLASS}`} />
+                  <Skeleton className={`h-5 w-10 rounded ${SKELETON_CLASS}`} />
+                </div>
+                <div className="space-y-1">
+                  <Skeleton className={`h-3 w-16 rounded ${SKELETON_CLASS}`} />
+                  <Skeleton className={`h-2.5 w-20 rounded ${SKELETON_CLASS}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* By collection */}
+          <div className="rounded-xl border border-divider p-3">
+            <Skeleton className={`h-4 w-24 rounded mb-3 ${SKELETON_CLASS}`} />
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="space-y-1">
+                  <div className="flex justify-between">
+                    <Skeleton className={`h-3 w-20 rounded ${SKELETON_CLASS}`} />
+                    <Skeleton className={`h-3 w-12 rounded ${SKELETON_CLASS}`} />
+                  </div>
+                  <Skeleton className={`h-1.5 w-full rounded-full ${SKELETON_CLASS}`} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Next targets */}
+          <div className="rounded-xl border border-divider p-3">
+            <Skeleton className={`h-4 w-28 rounded mb-2 ${SKELETON_CLASS}`} />
+            <div className="space-y-1.5">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex justify-between py-1.5 px-2 rounded bg-default-50 dark:bg-default-100/20">
+                  <Skeleton className={`h-3 w-24 rounded ${SKELETON_CLASS}`} />
+                  <Skeleton className={`h-3 w-8 rounded ${SKELETON_CLASS}`} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent achievements */}
+          <div className="rounded-xl border border-divider p-3">
+            <Skeleton className={`h-4 w-36 rounded mb-2 ${SKELETON_CLASS}`} />
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="py-1.5 px-2 space-y-1">
+                  <Skeleton className={`h-3 w-full rounded ${SKELETON_CLASS}`} />
+                  <Skeleton className={`h-2.5 w-32 rounded ${SKELETON_CLASS}`} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        {/* KHGameCard principal */}
+        <div className="flex-1 min-w-0">
+          <div className="rounded-xl border border-kh-gold/20 bg-kh-blue-light/20 backdrop-blur-sm overflow-hidden">
+            <div className="p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Skeleton className={`h-5 w-40 rounded-lg ${SKELETON_CLASS}`} />
+                    <Skeleton className={`h-6 w-20 rounded-full ${SKELETON_CLASS}`} />
+                  </div>
+                  <Skeleton className={`h-4 w-32 rounded ${SKELETON_CLASS}`} />
+                </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <Skeleton className={`h-8 w-14 rounded ${SKELETON_CLASS}`} />
+                  <Skeleton className={`h-2 w-28 sm:w-36 rounded-full ${SKELETON_CLASS}`} />
+                </div>
+              </div>
+
+              <div className="mt-3 pt-3 border-t border-divider">
+                <div className="flex gap-2 mb-3">
+                  <Skeleton className={`h-9 w-[180px] rounded-lg ${SKELETON_CLASS}`} />
+                  <Skeleton className={`h-9 w-[180px] rounded-lg ${SKELETON_CLASS}`} />
+                </div>
+                <div className="space-y-2">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className="flex items-center gap-3 py-2">
+                      <Skeleton className={`h-8 w-8 rounded shrink-0 ${SKELETON_CLASS}`} />
+                      <div className="flex-1 space-y-1 min-w-0">
+                        <Skeleton className={`h-4 w-full max-w-[80%] rounded ${SKELETON_CLASS}`} />
+                        <Skeleton className={`h-3 w-20 rounded ${SKELETON_CLASS}`} />
+                      </div>
+                      <Skeleton className={`h-5 w-8 rounded shrink-0 ${SKELETON_CLASS}`} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
