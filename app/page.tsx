@@ -231,8 +231,8 @@ export default function Home() {
       )}
 
       <section
-        className="mt-12 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
         aria-label="About KH Completionist"
+        className="mt-12 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
       >
         <h2 className="text-lg font-semibold text-foreground">
           About Kingdom Hearts Steam Achievement Tracker
