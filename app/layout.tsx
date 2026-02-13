@@ -4,6 +4,7 @@ import { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 
 import { fontKH, fontSans } from "@/config/fonts";
+import { GoogleAdsense } from "@/components/GoogleAdsense";
 
 import { Providers } from "./providers";
 
@@ -83,6 +84,7 @@ export default function RootLayout({
             </main>
           </div>
         </Providers>
+        <GoogleAdsense />
         <Analytics />
       </body>
     </html>

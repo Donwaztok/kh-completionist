@@ -6,6 +6,7 @@ import type {
 } from "@/lib/kingdom-hearts";
 
 import { Card, Chip, Progress } from "@heroui/react";
+import { SidebarAd } from "@/components/SidebarAd";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
@@ -340,6 +341,9 @@ export function Dashboard({ collections, player }: DashboardProps) {
           )}
         </Card>
       </motion.div>
+
+      {/* Anúncio lateral - 250x250 encaixa na coluna de 288px */}
+      <SidebarAd />
     </motion.aside>
   );
 }
