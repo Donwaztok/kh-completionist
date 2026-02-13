@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 import { fontKH, fontSans } from "@/config/fonts";
 
@@ -82,6 +83,7 @@ export default function RootLayout({
             </main>
           </div>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
