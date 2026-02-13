@@ -7,9 +7,11 @@ const STEAM_API_BASE = "https://api.steampowered.com";
 
 function getApiKey(): string {
   const key = process.env.STEAM_API_KEY;
+
   if (!key) {
     throw new Error("STEAM_API_KEY not configured");
   }
+
   return key;
 }
 
@@ -17,9 +19,7 @@ function getApiKey(): string {
  * Resolve vanity URL ou valida SteamID64
  * SteamID64 are 17-digit numbers
  */
-export async function resolveSteamId(
-  input: string
-): Promise<string | null> {
+export async function resolveSteamId(input: string): Promise<string | null> {
   const trimmed = input.trim();
 
   // If numeric and 17 digits, it's SteamID64
@@ -104,7 +104,7 @@ interface SchemaResponse {
 
 async function fetchPlayerAchievements(
   steamId: string,
-  appId: number
+  appId: number,
 ): Promise<PlayerAchievement[]> {
   const key = getApiKey();
   const url = `${STEAM_API_BASE}/ISteamUserStats/GetPlayerAchievements/v1/?key=${key}&steamid=${steamId}&appid=${appId}`;
@@ -126,14 +126,12 @@ async function fetchSchemaForGame(appId: number): Promise<SchemaAchievement[]> {
   const res = await fetch(url, { next: { revalidate: 300 } });
   const data: SchemaResponse = await res.json();
 
-  return (
-    data?.game?.availableGameStats?.achievements ?? []
-  );
+  return data?.game?.availableGameStats?.achievements ?? [];
 }
 
 async function processGame(
   steamId: string,
-  game: OwnedGame
+  game: OwnedGame,
 ): Promise<SteamGameWithAchievements | null> {
   const [playerAchievements, schemaAchievements] = await Promise.all([
     fetchPlayerAchievements(steamId, game.appid),
@@ -151,11 +149,11 @@ async function processGame(
         name: a.displayName ?? a.name,
         description: a.description ?? "",
       },
-    ])
+    ]),
   );
 
   const playerAchievementMap = new Map(
-    playerAchievements.map((a) => [a.apiname, a])
+    playerAchievements.map((a) => [a.apiname, a]),
   );
 
   const achievements: SteamAchievement[] = schemaAchievements.map((schema) => {
@@ -164,6 +162,7 @@ async function processGame(
       name: schema.name,
       description: "",
     };
+
     return {
       name: meta.name,
       description: meta.description,
@@ -191,13 +190,14 @@ const MAX_CONCURRENT = 5;
 async function processInBatches<T, R>(
   items: T[],
   fn: (item: T) => Promise<R | null>,
-  batchSize: number = MAX_CONCURRENT
+  batchSize: number = MAX_CONCURRENT,
 ): Promise<R[]> {
   const results: R[] = [];
 
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
     const batchResults = await Promise.all(batch.map(fn));
+
     for (const r of batchResults) {
       if (r !== null) results.push(r);
     }
@@ -207,12 +207,11 @@ async function processInBatches<T, R>(
 }
 
 export async function fetchAllAchievements(
-  steamId: string
+  steamId: string,
 ): Promise<SteamGameWithAchievements[]> {
   const games = await fetchOwnedGames(steamId);
-  const results = await processInBatches(
-    games,
-    (game) => processGame(steamId, game)
+  const results = await processInBatches(games, (game) =>
+    processGame(steamId, game),
   );
 
   return results.filter(Boolean);

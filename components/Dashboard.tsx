@@ -1,13 +1,14 @@
 "use client";
 
-import { Card, Chip, Progress } from "@heroui/react";
-import clsx from "clsx";
-import { motion } from "framer-motion";
-import { useMemo } from "react";
 import type {
   KHCollectionWithGames,
   SteamPlayerSummary,
 } from "@/lib/kingdom-hearts";
+
+import { Card, Chip, Progress } from "@heroui/react";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 16 },
@@ -44,7 +45,7 @@ function StatCard({
     <Card
       className={clsx(
         "border p-2.5 min-h-[70px] flex flex-col justify-between",
-        colorClasses[color]
+        colorClasses[color],
       )}
     >
       <div className="flex items-start justify-between gap-1">
@@ -80,10 +81,10 @@ function CollectionProgressBar({
         </span>
       </div>
       <Progress
-        value={overallPercent}
         className="max-w-full"
         color={overallPercent === 100 ? "success" : "primary"}
         size="sm"
+        value={overallPercent}
       />
     </div>
   );
@@ -122,22 +123,25 @@ function LastUnlockedAchievement({
 export function Dashboard({ collections, player }: DashboardProps) {
   const allGames = useMemo(
     () => collections.flatMap((c) => c.games),
-    [collections]
+    [collections],
   );
 
   const stats = useMemo(() => {
     const totalGames = allGames.length;
     const completedCount = allGames.filter((g) => g.isCompleted).length;
     const inProgressCount = allGames.filter(
-      (g) => !g.isCompleted && g.unlockedAchievements > 0
+      (g) => !g.isCompleted && g.unlockedAchievements > 0,
     ).length;
     const notStartedCount = allGames.filter(
-      (g) => !g.isCompleted && g.unlockedAchievements === 0
+      (g) => !g.isCompleted && g.unlockedAchievements === 0,
     ).length;
-    const totalAchievements = allGames.reduce((a, g) => a + g.totalAchievements, 0);
+    const totalAchievements = allGames.reduce(
+      (a, g) => a + g.totalAchievements,
+      0,
+    );
     const unlockedAchievements = allGames.reduce(
       (a, g) => a + g.unlockedAchievements,
-      0
+      0,
     );
     const overallPercent =
       totalAchievements > 0
@@ -160,9 +164,10 @@ export function Dashboard({ collections, player }: DashboardProps) {
       const total = col.games.reduce((a, g) => a + g.totalAchievements, 0);
       const unlocked = col.games.reduce(
         (a, g) => a + g.unlockedAchievements,
-        0
+        0,
       );
       const percent = total > 0 ? Math.round((unlocked / total) * 100) : 0;
+
       return { collection: col, percent };
     });
   }, [collections]);
@@ -180,6 +185,7 @@ export function Dashboard({ collections, player }: DashboardProps) {
       achievementName: string;
       unlockTime: number;
     }> = [];
+
     for (const game of allGames) {
       for (const a of game.achievements) {
         if (a.unlocked && a.unlockTime) {
@@ -192,14 +198,15 @@ export function Dashboard({ collections, player }: DashboardProps) {
       }
     }
     items.sort((a, b) => b.unlockTime - a.unlockTime);
+
     return items.slice(0, 5);
   }, [allGames]);
 
   return (
     <motion.aside
+      animate="animate"
       className="w-full lg:w-72 shrink-0 space-y-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
       initial="initial"
-      animate="animate"
       variants={{
         animate: { transition: { staggerChildren: 0.06 } },
       }}
@@ -212,9 +219,9 @@ export function Dashboard({ collections, player }: DashboardProps) {
               <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-kh-gold/50 shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={player.avatarfull}
                   alt={player.personaname}
                   className="w-full h-full object-cover"
+                  src={player.avatarfull}
                 />
               </div>
               <div className="min-w-0 flex-1">
@@ -222,17 +229,17 @@ export function Dashboard({ collections, player }: DashboardProps) {
                   {player.personaname}
                 </h3>
                 <a
-                  href={player.profileurl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-xs text-kh-gold hover:underline truncate block"
+                  href={player.profileurl}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Steam Profile →
                 </a>
               </div>
               <Chip
-                size="sm"
                 className="bg-kh-gold/20 text-kh-gold border-kh-gold/40 shrink-0"
+                size="sm"
               >
                 {stats.overallPercent}%
               </Chip>
@@ -244,39 +251,37 @@ export function Dashboard({ collections, player }: DashboardProps) {
       {/* Stats - compact column layout */}
       <motion.div className="grid grid-cols-2 gap-2" variants={fadeInUp}>
         <StatCard
-          label="Progress"
-          value={`${stats.overallPercent}%`}
-          subValue={`${stats.unlockedAchievements}/${stats.totalAchievements}`}
-          icon="📊"
           color="primary"
+          icon="📊"
+          label="Progress"
+          subValue={`${stats.unlockedAchievements}/${stats.totalAchievements}`}
+          value={`${stats.overallPercent}%`}
         />
         <StatCard
-          label="Completed"
-          value={stats.completedCount}
-          subValue={`of ${stats.totalGames}`}
-          icon="🏆"
           color="success"
+          icon="🏆"
+          label="Completed"
+          subValue={`of ${stats.totalGames}`}
+          value={stats.completedCount}
         />
         <StatCard
-          label="In progress"
-          value={stats.inProgressCount}
-          subValue="games"
           icon="🔄"
+          label="In progress"
+          subValue="games"
+          value={stats.inProgressCount}
         />
         <StatCard
-          label="Not started"
-          value={stats.notStartedCount}
-          subValue="games"
           icon="📭"
+          label="Not started"
+          subValue="games"
+          value={stats.notStartedCount}
         />
       </motion.div>
 
       {/* Progress by collection */}
       <motion.div variants={fadeInUp}>
         <Card className="border border-divider p-3">
-          <h4 className="font-kh font-semibold text-sm mb-3">
-            By collection
-          </h4>
+          <h4 className="font-kh font-semibold text-sm mb-3">By collection</h4>
           <div className="space-y-3">
             {collectionStats.map(({ collection, percent }) => (
               <CollectionProgressBar
@@ -293,9 +298,7 @@ export function Dashboard({ collections, player }: DashboardProps) {
       {nextTargets.length > 0 && (
         <motion.div variants={fadeInUp}>
           <Card className="border border-divider p-3">
-            <h4 className="font-kh font-semibold text-sm mb-2">
-              Next targets
-            </h4>
+            <h4 className="font-kh font-semibold text-sm mb-2">Next targets</h4>
             <div className="space-y-1.5">
               {nextTargets.map((game) => (
                 <div
@@ -326,16 +329,14 @@ export function Dashboard({ collections, player }: DashboardProps) {
               {lastUnlocked.map((item, i) => (
                 <LastUnlockedAchievement
                   key={`${item.gameName}-${item.achievementName}-${i}`}
-                  gameName={item.gameName}
                   achievementName={item.achievementName}
+                  gameName={item.gameName}
                   unlockTime={item.unlockTime}
                 />
               ))}
             </div>
           ) : (
-            <p className="text-default-500 text-xs py-2">
-              None yet.
-            </p>
+            <p className="text-default-500 text-xs py-2">None yet.</p>
           )}
         </Card>
       </motion.div>

@@ -14,12 +14,16 @@ export interface SteamSearchFormProps {
   isLoading?: boolean;
 }
 
-export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchFormProps) {
+export function SteamSearchForm({
+  onSearch,
+  isLoading = false,
+}: SteamSearchFormProps) {
   const [value, setValue] = useState("");
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
+
       if (saved) setValue(saved);
     } catch {
       // localStorage may not be available
@@ -30,6 +34,7 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
     (e: React.FormEvent) => {
       e.preventDefault();
       const trimmed = value.trim();
+
       if (!trimmed) return;
 
       try {
@@ -40,40 +45,43 @@ export function SteamSearchForm({ onSearch, isLoading = false }: SteamSearchForm
 
       onSearch(trimmed);
     },
-    [value, onSearch]
+    [value, onSearch],
   );
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl">
+    <form
+      className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl"
+      onSubmit={handleSubmit}
+    >
       <Input
         aria-label="SteamID or vanity URL"
+        autoComplete="off"
         className="flex-1"
+        isDisabled={isLoading}
         placeholder="SteamID64 or vanity URL (e.g. donwaztok)"
         value={value}
         onValueChange={setValue}
-        isDisabled={isLoading}
-        autoComplete="off"
       />
       <div className="flex gap-2">
         <Button
-          type="submit"
-          variant="solid"
+          isIconOnly
+          aria-label={isLoading ? "Searching..." : "Search"}
           color="primary"
           isDisabled={!value.trim() || isLoading}
           isLoading={isLoading}
-          isIconOnly
-          aria-label={isLoading ? "Searching..." : "Search"}
+          type="submit"
+          variant="solid"
         >
           <SearchIcon className="size-5" />
         </Button>
         <Button
-          as={NextLink}
-          href={siteConfig.links.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="flat"
           isIconOnly
           aria-label="GitHub"
+          as={NextLink}
+          href={siteConfig.links.github}
+          rel="noopener noreferrer"
+          target="_blank"
+          variant="flat"
         >
           <GithubIcon className="size-5" />
         </Button>

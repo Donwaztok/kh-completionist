@@ -1,10 +1,11 @@
 "use client";
 
+import type { KHGameWithAchievements } from "@/lib/kingdom-hearts";
+import type { SteamAchievement } from "@/types/steam";
+
 import { Card, Select, SelectItem } from "@heroui/react";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import type { KHGameWithAchievements } from "@/lib/kingdom-hearts";
-import type { SteamAchievement } from "@/types/steam";
 
 import { AchievementList } from "./AchievementList";
 
@@ -35,22 +36,18 @@ function ProgressBar({
   className?: string;
 }) {
   const colorClass =
-    value === 100
-      ? "bg-success"
-      : value > 0
-        ? "bg-primary"
-        : "bg-default-300";
+    value === 100 ? "bg-success" : value > 0 ? "bg-primary" : "bg-default-300";
 
   return (
     <div
+      aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={value}
       className={clsx(
         "h-2 rounded-full overflow-hidden bg-default-200",
-        className
+        className,
       )}
       role="progressbar"
-      aria-valuenow={value}
-      aria-valuemin={0}
-      aria-valuemax={100}
     >
       <div
         className={clsx("h-full transition-all duration-300", colorClass)}
@@ -75,6 +72,7 @@ function StatusBadge({ game }: { game: KHGameWithAchievements }) {
       </span>
     );
   }
+
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-default-200 text-default-600">
       ❌ Not started
@@ -87,7 +85,7 @@ type AchievementWithIndex = SteamAchievement & { originalIndex: number };
 function filterAndSortAchievements(
   achievements: AchievementWithIndex[],
   filter: AchievementFilterType,
-  sort: AchievementSortType
+  sort: AchievementSortType,
 ): SteamAchievement[] {
   let result = [...achievements];
 
@@ -108,7 +106,9 @@ function filterAndSortAchievements(
         sort === "unlocked_first"
           ? (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0)
           : (a.unlocked ? 1 : 0) - (b.unlocked ? 1 : 0);
+
       if (primary !== 0) return primary;
+
       return a.originalIndex - b.originalIndex;
     });
   }
@@ -126,12 +126,12 @@ export function KHGameCard({ game }: KHGameCardProps) {
         ...a,
         originalIndex: i,
       })),
-    [game.achievements]
+    [game.achievements],
   );
 
   const filteredAchievements = useMemo(
     () => filterAndSortAchievements(achievements, filter, sort),
-    [achievements, filter, sort]
+    [achievements, filter, sort],
   );
 
   return (
@@ -146,7 +146,8 @@ export function KHGameCard({ game }: KHGameCardProps) {
               <StatusBadge game={game} />
             </div>
             <p className="text-sm text-default-500 mt-0.5">
-              {game.unlockedAchievements} / {game.totalAchievements} achievements
+              {game.unlockedAchievements} / {game.totalAchievements}{" "}
+              achievements
             </p>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
@@ -163,33 +164,35 @@ export function KHGameCard({ game }: KHGameCardProps) {
           <div className="flex flex-nowrap gap-2 mb-3 w-fit">
             <Select
               aria-label="Filter achievements"
+              className="w-[180px]"
+              fullWidth={false}
               selectedKeys={[filter]}
+              size="sm"
               onSelectionChange={(keys) => {
                 const value = Array.from(keys)[0];
+
                 setFilter((value as AchievementFilterType) ?? "all");
               }}
-              size="sm"
-              fullWidth={false}
-              className="w-[180px]"
             >
               {FILTER_OPTIONS.map((opt) => (
                 <SelectItem key={opt.key}>{opt.label}</SelectItem>
               ))}
             </Select>
             <Select
+              isClearable
               aria-label="Sort achievements"
+              className="w-[180px]"
+              disallowEmptySelection={false}
+              fullWidth={false}
               placeholder="Sort achievements"
               selectedKeys={sort === "none" ? [] : [sort]}
+              size="sm"
+              onClear={() => setSort("none")}
               onSelectionChange={(keys) => {
                 const value = Array.from(keys)[0];
+
                 setSort((value as AchievementSortType) ?? "none");
               }}
-              onClear={() => setSort("none")}
-              isClearable
-              disallowEmptySelection={false}
-              size="sm"
-              fullWidth={false}
-              className="w-[180px]"
             >
               {SORT_OPTIONS.map((opt) => (
                 <SelectItem key={opt.key}>{opt.label}</SelectItem>

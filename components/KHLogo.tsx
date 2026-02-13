@@ -15,12 +15,13 @@ export function KHLogo({
   ...props
 }: IconSvgProps) {
   const s = size || width || height || 36;
+
   return (
     <svg
+      className={className}
+      height={s}
       viewBox="0 0 32 32"
       width={s}
-      height={s}
-      className={className}
       {...props}
     >
       {/* Heart with crown top - two inward curved tips */}

@@ -1,7 +1,8 @@
 "use client";
 
-import { HeroUIProvider } from "@heroui/react";
 import type { ThemeProviderProps } from "next-themes";
+
+import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export interface ProvidersProps {

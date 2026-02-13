@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  fetchAllAchievements,
-  resolveSteamId,
-} from "@/lib/steam";
+import { fetchAllAchievements, resolveSteamId } from "@/lib/steam";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 minutes
@@ -15,7 +12,7 @@ export async function GET(request: NextRequest) {
   if (!steamIdInput?.trim()) {
     return NextResponse.json(
       { error: "SteamID or vanity URL is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -25,7 +22,7 @@ export async function GET(request: NextRequest) {
     if (!steamId) {
       return NextResponse.json(
         { error: "Invalid SteamID or vanity URL. Check and try again." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -37,7 +34,7 @@ export async function GET(request: NextRequest) {
         headers: {
           "Cache-Control": "private, s-maxage=300, stale-while-revalidate=600",
         },
-      }
+      },
     );
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -45,7 +42,7 @@ export async function GET(request: NextRequest) {
     if (message.includes("STEAM_API_KEY")) {
       return NextResponse.json(
         { error: "API not configured. Set STEAM_API_KEY." },
-        { status: 503 }
+        { status: 503 },
       );
     }
 
@@ -59,7 +56,7 @@ export async function GET(request: NextRequest) {
           error:
             "Private or inaccessible profile. Make your profile public in Steam settings.",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -67,7 +64,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       { error: "Error fetching achievements. Try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

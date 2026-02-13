@@ -1,5 +1,11 @@
 "use client";
 
+import type {
+  KHCollectionWithGames,
+  KHGameWithAchievements,
+  SteamPlayerSummary,
+} from "@/lib/kingdom-hearts";
+
 import { Button, Chip, Skeleton } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -7,11 +13,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
 import { KHGameCard } from "@/components/KHGameCard";
 import { SteamSearchForm } from "@/components/SteamSearchForm";
-import type {
-  KHCollectionWithGames,
-  KHGameWithAchievements,
-  SteamPlayerSummary,
-} from "@/lib/kingdom-hearts";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 24 },
@@ -65,7 +66,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const allGames = useMemo(
     () => collections.flatMap((c) => c.games),
-    [collections]
+    [collections],
   );
   const [selectedTab, setSelectedTab] = useState<string>("");
 
@@ -81,7 +82,7 @@ export default function Home() {
 
     try {
       const res = await fetch(
-        `/api/kingdom-hearts?steamid=${encodeURIComponent(steamId)}`
+        `/api/kingdom-hearts?steamid=${encodeURIComponent(steamId)}`,
       );
       const data = await res.json();
 
@@ -102,9 +103,9 @@ export default function Home() {
 
   return (
     <motion.section
+      animate="animate"
       className="flex flex-col gap-8 py-8 md:py-10"
       initial="initial"
-      animate="animate"
       variants={staggerContainer}
     >
       <motion.div
@@ -116,19 +117,16 @@ export default function Home() {
         </h1>
       </motion.div>
 
-      <motion.div
-        className="flex justify-center"
-        variants={fadeInUp}
-      >
-        <SteamSearchForm onSearch={handleSearch} isLoading={loading} />
+      <motion.div className="flex justify-center" variants={fadeInUp}>
+        <SteamSearchForm isLoading={loading} onSearch={handleSearch} />
       </motion.div>
 
       {error && (
         <motion.div
-          className="rounded-lg bg-danger-50 dark:bg-danger-500/10 px-4 py-3 text-danger"
-          variants={fadeInUp}
-          initial="initial"
           animate="animate"
+          className="rounded-lg bg-danger-50 dark:bg-danger-500/10 px-4 py-3 text-danger"
+          initial="initial"
+          variants={fadeInUp}
         >
           <p className="text-sm font-medium">{error}</p>
         </motion.div>
@@ -142,9 +140,9 @@ export default function Home() {
 
       {!loading && collections.length > 0 && (
         <motion.div
+          animate="animate"
           className="flex flex-col gap-4"
           initial="initial"
-          animate="animate"
           variants={staggerContainer}
         >
           {allGames.length > 0 && (
@@ -164,31 +162,30 @@ export default function Home() {
                     {collection.games.map((game) => {
                       const key = gameKey(game);
                       const isSelected = selectedTab === key;
+
                       return (
                         <Button
                           key={key}
-                          size="sm"
-                          variant="light"
                           className={`min-h-0 px-2 py-1 font-medium text-sm rounded-lg transition-all ${
                             isSelected
                               ? "bg-kh-gold text-kh-blue font-semibold hover:!bg-kh-gold hover:!text-kh-blue"
                               : "bg-transparent text-default-600 hover:bg-default-100"
                           }`}
+                          size="sm"
+                          variant="light"
                           onPress={() => setSelectedTab(key)}
                         >
                           <span className="flex items-center gap-2 whitespace-nowrap">
-                            <span>
-                              {game.name}
-                            </span>
+                            <span>{game.name}</span>
                             {game.isCompleted ? (
                               <Chip
-                                size="sm"
-                                variant="flat"
                                 className={`h-5 min-w-0 px-1.5 text-[10px] shrink-0 ${
                                   isSelected
                                     ? "bg-kh-blue/90 text-kh-gold-light border border-kh-gold/50"
                                     : "bg-kh-silver/25 text-kh-silver border border-kh-silver/40"
                                 }`}
+                                size="sm"
+                                variant="flat"
                               >
                                 🏆 100%
                               </Chip>
@@ -224,10 +221,10 @@ export default function Home() {
 
       {!loading && collections.length === 0 && !error && (
         <motion.p
-          className="text-default-500 text-center py-8"
-          variants={fadeInUp}
-          initial="initial"
           animate="animate"
+          className="text-default-500 text-center py-8"
+          initial="initial"
+          variants={fadeInUp}
         >
           Enter your SteamID or vanity URL and click Search to get started.
         </motion.p>

@@ -1,8 +1,9 @@
 "use client";
 
+import type { KHCollectionWithGames } from "@/lib/kingdom-hearts";
+
 import { Card } from "@heroui/react";
 import clsx from "clsx";
-import type { KHCollectionWithGames } from "@/lib/kingdom-hearts";
 
 import { KHGameCard } from "./KHGameCard";
 
@@ -18,22 +19,18 @@ function CollectionProgressBar({
   className?: string;
 }) {
   const colorClass =
-    value === 100
-      ? "bg-success"
-      : value > 0
-        ? "bg-primary"
-        : "bg-default-300";
+    value === 100 ? "bg-success" : value > 0 ? "bg-primary" : "bg-default-300";
 
   return (
     <div
+      aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={value}
       className={clsx(
         "h-2 rounded-full overflow-hidden bg-default-200",
-        className
+        className,
       )}
       role="progressbar"
-      aria-valuenow={value}
-      aria-valuemin={0}
-      aria-valuemax={100}
     >
       <div
         className={clsx("h-full transition-all duration-300", colorClass)}
@@ -46,11 +43,11 @@ function CollectionProgressBar({
 export function CollectionCard({ collection }: CollectionCardProps) {
   const totalAchievements = collection.games.reduce(
     (acc, g) => acc + g.totalAchievements,
-    0
+    0,
   );
   const unlockedAchievements = collection.games.reduce(
     (acc, g) => acc + g.unlockedAchievements,
-    0
+    0,
   );
   const avgPercentage =
     totalAchievements > 0

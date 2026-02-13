@@ -9,6 +9,7 @@ export interface AchievementListProps {
 function formatUnlockTime(timestamp?: number): string {
   if (!timestamp) return "";
   const date = new Date(timestamp * 1000);
+
   return date.toLocaleDateString("en-US", {
     day: "2-digit",
     month: "2-digit",
@@ -37,19 +38,21 @@ export function AchievementList({ achievements }: AchievementListProps) {
           <div className="flex-shrink-0">
             {achievement.icon || achievement.icongray ? (
               <img
-                src={
-                  achievement.unlocked
-                    ? achievement.icon ?? achievement.icongray
-                    : achievement.icongray ?? achievement.icon
-                }
                 alt=""
                 className="w-6 h-6 rounded"
                 loading="lazy"
+                src={
+                  achievement.unlocked
+                    ? (achievement.icon ?? achievement.icongray)
+                    : (achievement.icongray ?? achievement.icon)
+                }
               />
             ) : (
               <span
                 className={`inline-flex w-6 h-6 items-center justify-center rounded text-xs ${
-                  achievement.unlocked ? "bg-success/30 text-success" : "bg-default-200 text-default-500"
+                  achievement.unlocked
+                    ? "bg-success/30 text-success"
+                    : "bg-default-200 text-default-500"
                 }`}
               >
                 {achievement.unlocked ? "✓" : "○"}

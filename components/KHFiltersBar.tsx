@@ -1,7 +1,8 @@
 "use client";
 
-import { Input } from "@heroui/react";
 import type { AchievementFilter, SortOption } from "@/types/steam";
+
+import { Input } from "@heroui/react";
 
 import { SearchIcon } from "@/components/icons";
 
@@ -49,17 +50,19 @@ export function KHFiltersBar({
           aria-label="Search by game name"
           className="flex-1 max-w-md"
           placeholder="Search game..."
+          startContent={<SearchIcon className="size-4 text-default-400" />}
           value={searchQuery}
           onValueChange={onSearchChange}
-          startContent={<SearchIcon className="size-4 text-default-400" />}
         />
 
         <div className="flex flex-wrap gap-2">
           <select
             aria-label="Filter"
-            value={filter}
-            onChange={(e) => onFilterChange(e.target.value as AchievementFilter)}
             className={selectClass}
+            value={filter}
+            onChange={(e) =>
+              onFilterChange(e.target.value as AchievementFilter)
+            }
           >
             {FILTER_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -70,9 +73,9 @@ export function KHFiltersBar({
 
           <select
             aria-label="Sort"
+            className={selectClass}
             value={sort}
             onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className={selectClass}
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>

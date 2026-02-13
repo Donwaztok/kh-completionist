@@ -33,10 +33,7 @@ export const KINGDOM_HEARTS_GAMES = [
   {
     collection: "KH3",
     appId: 2552450,
-    games: [
-      { name: "Kingdom Hearts III" },
-      { name: "Re Mind (DLC)" },
-    ],
+    games: [{ name: "Kingdom Hearts III" }, { name: "Re Mind (DLC)" }],
   },
 ] as const;
 
@@ -97,9 +94,11 @@ interface SchemaAchievement {
 
 function getApiKey(): string {
   const key = process.env.STEAM_API_KEY;
+
   if (!key) {
     throw new Error("STEAM_API_KEY not configured");
   }
+
   return key;
 }
 
@@ -116,7 +115,7 @@ async function fetchFromSteam<T>(url: string): Promise<T> {
 
 async function fetchPlayerAchievements(
   steamId: string,
-  appId: number
+  appId: number,
 ): Promise<PlayerAchievement[]> {
   const key = getApiKey();
   const url = `https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=${key}&steamid=${steamId}&appid=${appId}`;
@@ -132,9 +131,7 @@ async function fetchPlayerAchievements(
   return data?.playerstats?.achievements ?? [];
 }
 
-async function fetchSchemaForGame(
-  appId: number
-): Promise<SchemaAchievement[]> {
+async function fetchSchemaForGame(appId: number): Promise<SchemaAchievement[]> {
   const key = getApiKey();
   const url = `https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${key}&appid=${appId}`;
 
@@ -157,7 +154,7 @@ async function fetchOwnedGames(steamId: string): Promise<SteamOwnedGame[]> {
 }
 
 async function fetchPlayerSummaries(
-  steamId: string
+  steamId: string,
 ): Promise<SteamPlayerSummary | null> {
   const key = getApiKey();
   const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${key}&steamids=${steamId}`;
@@ -167,13 +164,14 @@ async function fetchPlayerSummaries(
   }>(url);
 
   const players = data?.response?.players ?? [];
+
   return players[0] ?? null;
 }
 
 async function processApp(
   steamId: string,
   appId: number,
-  ownedAppIds: Set<number>
+  ownedAppIds: Set<number>,
 ): Promise<{
   appId: number;
   allAchievements: Array<{
@@ -199,12 +197,11 @@ async function processApp(
     return null;
   }
 
-  const playerAchiMap = new Map(
-    playerAchievements.map((a) => [a.apiname, a])
-  );
+  const playerAchiMap = new Map(playerAchievements.map((a) => [a.apiname, a]));
 
   const allAchievements = schemaAchievements.map((schema) => {
     const playerAchi = playerAchiMap.get(schema.name);
+
     return {
       name: schema.displayName ?? schema.name,
       description: schema.description ?? "",
@@ -233,7 +230,7 @@ function filterAchievementsByGame(
     apiname: string;
   }>,
   appId: number,
-  gameName: string
+  gameName: string,
 ): KHGameWithAchievements["achievements"] {
   return allAchievements
     .filter((a) => {
@@ -241,8 +238,9 @@ function filterAchievementsByGame(
         appId,
         a.apiname,
         a.name,
-        a.description
+        a.description,
       );
+
       return assignedGame === gameName;
     })
     .map(({ apiname, ...rest }) => rest);
@@ -251,13 +249,14 @@ function filterAchievementsByGame(
 async function processInBatches<T, R>(
   items: T[],
   fn: (item: T) => Promise<R | null>,
-  batchSize: number = MAX_CONCURRENT
+  batchSize: number = MAX_CONCURRENT,
 ): Promise<R[]> {
   const results: R[] = [];
 
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
     const batchResults = await Promise.all(batch.map(fn));
+
     for (const r of batchResults) {
       if (r !== null) results.push(r);
     }
@@ -266,9 +265,7 @@ async function processInBatches<T, R>(
   return results;
 }
 
-export async function fetchKingdomHeartsAchievements(
-  steamId: string
-): Promise<{
+export async function fetchKingdomHeartsAchievements(steamId: string): Promise<{
   collections: KHCollectionWithGames[];
   player: SteamPlayerSummary | null;
 }> {
@@ -279,46 +276,48 @@ export async function fetchKingdomHeartsAchievements(
   const ownedAppIds = new Set(ownedGames.map((g) => g.appid));
 
   const uniqueAppIds = Array.from(
-    new Set(KINGDOM_HEARTS_GAMES.map((col) => col.appId))
+    new Set(KINGDOM_HEARTS_GAMES.map((col) => col.appId)),
   );
 
-  const processedApps = await processInBatches(
-    uniqueAppIds,
-    (appId) => processApp(steamId, appId, ownedAppIds)
+  const processedApps = await processInBatches(uniqueAppIds, (appId) =>
+    processApp(steamId, appId, ownedAppIds),
   );
 
-  const processedByAppId = new Map(
-    processedApps.map((p) => [p.appId, p])
-  );
+  const processedByAppId = new Map(processedApps.map((p) => [p.appId, p]));
 
   const collections: KHCollectionWithGames[] = KINGDOM_HEARTS_GAMES.map(
     (col) => {
       const processed = processedByAppId.get(col.appId);
+
       if (!processed) {
         return { name: col.collection, games: [] };
       }
-      const games: KHGameWithAchievements[] = col.games.map((game) => {
-        const achievements = filterAchievementsByGame(
-          processed.allAchievements,
-          col.appId,
-          game.name
-        );
-        const total = achievements.length;
-        const unlocked = achievements.filter((a) => a.unlocked).length;
-        const percentage = total > 0 ? Math.round((unlocked / total) * 100) : 0;
-        return {
-          name: game.name,
-          appId: col.appId,
-          totalAchievements: total,
-          unlockedAchievements: unlocked,
-          percentage,
-          isCompleted: total > 0 && percentage === 100,
-          achievements,
-        };
-      }).filter((g) => g.totalAchievements > 0);
+      const games: KHGameWithAchievements[] = col.games
+        .map((game) => {
+          const achievements = filterAchievementsByGame(
+            processed.allAchievements,
+            col.appId,
+            game.name,
+          );
+          const total = achievements.length;
+          const unlocked = achievements.filter((a) => a.unlocked).length;
+          const percentage =
+            total > 0 ? Math.round((unlocked / total) * 100) : 0;
+
+          return {
+            name: game.name,
+            appId: col.appId,
+            totalAchievements: total,
+            unlockedAchievements: unlocked,
+            percentage,
+            isCompleted: total > 0 && percentage === 100,
+            achievements,
+          };
+        })
+        .filter((g) => g.totalAchievements > 0);
 
       return { name: col.collection, games };
-    }
+    },
   ).filter((col) => col.games.length > 0);
 
   return { collections, player };

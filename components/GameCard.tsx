@@ -1,10 +1,10 @@
 "use client";
 
+import type { SteamGameWithAchievements } from "@/types/steam";
+
 import { Button, Card } from "@heroui/react";
 import clsx from "clsx";
 import { useState } from "react";
-
-import type { SteamGameWithAchievements } from "@/types/steam";
 
 import { AchievementList } from "./AchievementList";
 
@@ -20,19 +20,18 @@ function ProgressBar({
   className?: string;
 }) {
   const colorClass =
-    value === 100
-      ? "bg-success"
-      : value > 0
-        ? "bg-primary"
-        : "bg-default-300";
+    value === 100 ? "bg-success" : value > 0 ? "bg-primary" : "bg-default-300";
 
   return (
     <div
-      className={clsx("h-2 rounded-full overflow-hidden bg-default-200", className)}
-      role="progressbar"
-      aria-valuenow={value}
-      aria-valuemin={0}
       aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={value}
+      className={clsx(
+        "h-2 rounded-full overflow-hidden bg-default-200",
+        className,
+      )}
+      role="progressbar"
     >
       <div
         className={clsx("h-full transition-all duration-300", colorClass)}
@@ -68,9 +67,9 @@ export function GameCard({ game }: GameCardProps) {
         </div>
 
         <Button
-          variant="ghost"
-          size="sm"
           className="mt-3"
+          size="sm"
+          variant="ghost"
           onPress={() => setExpanded(!expanded)}
         >
           {expanded ? "Ocultar conquistas" : "Ver conquistas"}
