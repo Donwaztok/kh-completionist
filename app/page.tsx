@@ -349,14 +349,12 @@ export default function Home() {
         </h2>
         <ol className="space-y-4 list-decimal list-inside">
           <li>
-            <span className="font-medium text-foreground">Find your SteamID.</span> Go to your Steam
-            profile and copy either your <strong>SteamID64</strong> (17-digit number in the URL) or
-            your <strong>vanity URL</strong> (the custom name in your profile URL).
+            <span className="font-medium text-foreground">Find your SteamID.</span> Use your
+            SteamID64 or vanity URL from your Steam profile (FAQ has details).
           </li>
           <li>
-            <span className="font-medium text-foreground">Paste and search.</span> Enter it in the
-            box above and click Search. Your Steam profile must be <strong>public</strong> so we
-            can fetch your achievements.
+            <span className="font-medium text-foreground">Paste and search.</span> Enter it above
+            and click Search. Profile must be public.
           </li>
           <li>
             <span className="font-medium text-foreground">Browse your progress.</span> Use the tabs
@@ -382,6 +380,38 @@ export default function Home() {
             </li>
           </ul>
         </div>
+      </section>
+
+      <section
+        aria-label="Frequently asked questions"
+        className="mt-8 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
+      >
+        <h2 className="text-lg font-semibold text-foreground">
+          FAQ
+        </h2>
+        <dl className="space-y-4">
+          <div>
+            <dt className="font-medium text-foreground mb-1">
+              Where do I find my SteamID?
+            </dt>
+            <dd>
+              Open your Steam profile in a browser. The SteamID64 is the 17-digit
+              number in the URL (e.g. steamcommunity.com/profiles/76561198012345678).
+              If you use a custom URL, your vanity name (e.g. steamcommunity.com/id/myname)
+              works too — enter &quot;myname&quot; in the search box.
+            </dd>
+          </div>
+          <div>
+            <dt className="font-medium text-foreground mb-1">
+              Why aren&apos;t my achievements showing?
+            </dt>
+            <dd>
+              Your Steam profile must be set to <strong>Public</strong>. In Steam,
+              go to Profile → Edit Profile → Privacy Settings and set &quot;My profile&quot;
+              to Public. Game details must also be public.
+            </dd>
+          </div>
+        </dl>
       </section>
 
       <section
@@ -411,10 +441,9 @@ export default function Home() {
           Games Included
         </h3>
         <p>
-          The tracker covers all Kingdom Hearts titles on Steam: KH1 Final Mix,
-          KH2 Final Mix, Birth by Sleep, Dream Drop Distance, and KH3 with its
-          ReMind DLC. Enter your SteamID to see your Kingdom Hearts Steam
-          achievements and track progress toward full completion.
+          All Kingdom Hearts titles on Steam: KH1 Final Mix, Re:Chain of Memories,
+          KH2 Final Mix, 358/2 Days, Birth by Sleep, Re:Coded, Dream Drop Distance,
+          0.2 Fragmentary Passage, χ Back Cover, Kingdom Hearts III, and Re Mind DLC.
         </p>
       </section>
     </motion.section>
