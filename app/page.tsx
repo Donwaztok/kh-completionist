@@ -332,7 +332,7 @@ export default function Home() {
       {!loading && collections.length === 0 && !error && (
         <motion.p
           animate="animate"
-          className="text-default-500 text-center py-8"
+          className="text-default-500 text-center py-4"
           initial="initial"
           variants={fadeInUp}
         >
@@ -341,8 +341,52 @@ export default function Home() {
       )}
 
       <section
+        aria-label="How to use KH Completionist"
+        className="mt-12 pt-8 border-t border-divider max-w-2xl mx-auto space-y-6 text-default-600 dark:text-default-500 text-sm"
+      >
+        <h2 className="text-lg font-semibold text-foreground">
+          How to Use
+        </h2>
+        <ol className="space-y-4 list-decimal list-inside">
+          <li>
+            <span className="font-medium text-foreground">Find your SteamID.</span> Go to your Steam
+            profile and copy either your <strong>SteamID64</strong> (17-digit number in the URL) or
+            your <strong>vanity URL</strong> (the custom name in your profile URL).
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Paste and search.</span> Enter it in the
+            box above and click Search. Your Steam profile must be <strong>public</strong> so we
+            can fetch your achievements.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Browse your progress.</span> Use the tabs
+            to switch between games. Filter achievements (All, Unlocked, Locked) and sort them to
+            find your next targets.
+          </li>
+        </ol>
+        <div>
+          <h3 className="text-base font-medium text-foreground mb-2">Examples</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>SteamID64:</strong>{" "}
+              <code className="px-1.5 py-0.5 rounded bg-default-200 dark:bg-default-100/30 font-mono text-xs">
+                76561198012345678
+              </code>
+            </li>
+            <li>
+              <strong>Vanity URL:</strong>{" "}
+              <code className="px-1.5 py-0.5 rounded bg-default-200 dark:bg-default-100/30 font-mono text-xs">
+                donwaztok
+              </code>{" "}
+              (from steamcommunity.com/id/donwaztok)
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section
         aria-label="About KH Completionist"
-        className="mt-12 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
+        className="mt-8 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
       >
         <h2 className="text-lg font-semibold text-foreground">
           About Kingdom Hearts Steam Achievement Tracker
