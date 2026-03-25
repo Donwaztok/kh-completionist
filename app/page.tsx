@@ -39,10 +39,15 @@ function GamesListSkeleton() {
       {/* Barra de tabs das collections + jogos */}
       <div className="flex flex-col gap-1.5 items-start w-full">
         <div className="flex flex-row items-center gap-3 p-1.5 rounded-xl bg-default-100 dark:bg-default-100/10 border border-default-200/50 w-full">
-          <Skeleton className={`h-3.5 w-16 rounded-md shrink-0 ${SKELETON_CLASS}`} />
+          <Skeleton
+            className={`h-3.5 w-16 rounded-md shrink-0 ${SKELETON_CLASS}`}
+          />
           <div className="flex flex-wrap gap-1">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className={`h-8 w-24 rounded-lg ${SKELETON_CLASS}`} />
+              <Skeleton
+                key={i}
+                className={`h-8 w-24 rounded-lg ${SKELETON_CLASS}`}
+              />
             ))}
           </div>
         </div>
@@ -54,12 +59,16 @@ function GamesListSkeleton() {
           {/* Player card skeleton */}
           <div className="rounded-xl border border-kh-gold/30 bg-kh-blue-light/20 overflow-hidden">
             <div className="p-3 flex flex-row items-center gap-3">
-              <Skeleton className={`h-12 w-12 rounded-full shrink-0 ${SKELETON_CLASS}`} />
+              <Skeleton
+                className={`h-12 w-12 rounded-full shrink-0 ${SKELETON_CLASS}`}
+              />
               <div className="min-w-0 flex-1 space-y-2">
                 <Skeleton className={`h-4 w-32 rounded-md ${SKELETON_CLASS}`} />
                 <Skeleton className={`h-3 w-24 rounded-md ${SKELETON_CLASS}`} />
               </div>
-              <Skeleton className={`h-6 w-12 rounded-lg shrink-0 ${SKELETON_CLASS}`} />
+              <Skeleton
+                className={`h-6 w-12 rounded-lg shrink-0 ${SKELETON_CLASS}`}
+              />
             </div>
           </div>
 
@@ -76,7 +85,9 @@ function GamesListSkeleton() {
                 </div>
                 <div className="space-y-1">
                   <Skeleton className={`h-3 w-16 rounded ${SKELETON_CLASS}`} />
-                  <Skeleton className={`h-2.5 w-20 rounded ${SKELETON_CLASS}`} />
+                  <Skeleton
+                    className={`h-2.5 w-20 rounded ${SKELETON_CLASS}`}
+                  />
                 </div>
               </div>
             ))}
@@ -89,10 +100,16 @@ function GamesListSkeleton() {
               {[1, 2, 3].map((i) => (
                 <div key={i} className="space-y-1">
                   <div className="flex justify-between">
-                    <Skeleton className={`h-3 w-20 rounded ${SKELETON_CLASS}`} />
-                    <Skeleton className={`h-3 w-12 rounded ${SKELETON_CLASS}`} />
+                    <Skeleton
+                      className={`h-3 w-20 rounded ${SKELETON_CLASS}`}
+                    />
+                    <Skeleton
+                      className={`h-3 w-12 rounded ${SKELETON_CLASS}`}
+                    />
                   </div>
-                  <Skeleton className={`h-1.5 w-full rounded-full ${SKELETON_CLASS}`} />
+                  <Skeleton
+                    className={`h-1.5 w-full rounded-full ${SKELETON_CLASS}`}
+                  />
                 </div>
               ))}
             </div>
@@ -103,7 +120,10 @@ function GamesListSkeleton() {
             <Skeleton className={`h-4 w-28 rounded mb-2 ${SKELETON_CLASS}`} />
             <div className="space-y-1.5">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex justify-between py-1.5 px-2 rounded bg-default-50 dark:bg-default-100/20">
+                <div
+                  key={i}
+                  className="flex justify-between py-1.5 px-2 rounded bg-default-50 dark:bg-default-100/20"
+                >
                   <Skeleton className={`h-3 w-24 rounded ${SKELETON_CLASS}`} />
                   <Skeleton className={`h-3 w-8 rounded ${SKELETON_CLASS}`} />
                 </div>
@@ -117,8 +137,12 @@ function GamesListSkeleton() {
             <div className="space-y-2">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="py-1.5 px-2 space-y-1">
-                  <Skeleton className={`h-3 w-full rounded ${SKELETON_CLASS}`} />
-                  <Skeleton className={`h-2.5 w-32 rounded ${SKELETON_CLASS}`} />
+                  <Skeleton
+                    className={`h-3 w-full rounded ${SKELETON_CLASS}`}
+                  />
+                  <Skeleton
+                    className={`h-2.5 w-32 rounded ${SKELETON_CLASS}`}
+                  />
                 </div>
               ))}
             </div>
@@ -132,31 +156,49 @@ function GamesListSkeleton() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="min-w-0 flex-1 space-y-2">
                   <div className="flex items-center gap-2">
-                    <Skeleton className={`h-5 w-40 rounded-lg ${SKELETON_CLASS}`} />
-                    <Skeleton className={`h-6 w-20 rounded-full ${SKELETON_CLASS}`} />
+                    <Skeleton
+                      className={`h-5 w-40 rounded-lg ${SKELETON_CLASS}`}
+                    />
+                    <Skeleton
+                      className={`h-6 w-20 rounded-full ${SKELETON_CLASS}`}
+                    />
                   </div>
                   <Skeleton className={`h-4 w-32 rounded ${SKELETON_CLASS}`} />
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
                   <Skeleton className={`h-8 w-14 rounded ${SKELETON_CLASS}`} />
-                  <Skeleton className={`h-2 w-28 sm:w-36 rounded-full ${SKELETON_CLASS}`} />
+                  <Skeleton
+                    className={`h-2 w-28 sm:w-36 rounded-full ${SKELETON_CLASS}`}
+                  />
                 </div>
               </div>
 
               <div className="mt-3 pt-3 border-t border-divider">
                 <div className="flex gap-2 mb-3">
-                  <Skeleton className={`h-9 w-[180px] rounded-lg ${SKELETON_CLASS}`} />
-                  <Skeleton className={`h-9 w-[180px] rounded-lg ${SKELETON_CLASS}`} />
+                  <Skeleton
+                    className={`h-9 w-[180px] rounded-lg ${SKELETON_CLASS}`}
+                  />
+                  <Skeleton
+                    className={`h-9 w-[180px] rounded-lg ${SKELETON_CLASS}`}
+                  />
                 </div>
                 <div className="space-y-2">
                   {[1, 2, 3, 4, 5, 6].map((i) => (
                     <div key={i} className="flex items-center gap-3 py-2">
-                      <Skeleton className={`h-8 w-8 rounded shrink-0 ${SKELETON_CLASS}`} />
+                      <Skeleton
+                        className={`h-8 w-8 rounded shrink-0 ${SKELETON_CLASS}`}
+                      />
                       <div className="flex-1 space-y-1 min-w-0">
-                        <Skeleton className={`h-4 w-full max-w-[80%] rounded ${SKELETON_CLASS}`} />
-                        <Skeleton className={`h-3 w-20 rounded ${SKELETON_CLASS}`} />
+                        <Skeleton
+                          className={`h-4 w-full max-w-[80%] rounded ${SKELETON_CLASS}`}
+                        />
+                        <Skeleton
+                          className={`h-3 w-20 rounded ${SKELETON_CLASS}`}
+                        />
                       </div>
-                      <Skeleton className={`h-5 w-8 rounded shrink-0 ${SKELETON_CLASS}`} />
+                      <Skeleton
+                        className={`h-5 w-8 rounded shrink-0 ${SKELETON_CLASS}`}
+                      />
                     </div>
                   ))}
                 </div>
@@ -344,26 +386,33 @@ export default function Home() {
         aria-label="How to use KH Completionist"
         className="mt-12 pt-8 border-t border-divider max-w-2xl mx-auto space-y-6 text-default-600 dark:text-default-500 text-sm"
       >
-        <h2 className="text-lg font-semibold text-foreground">
-          How to Use
-        </h2>
+        <h2 className="text-lg font-semibold text-foreground">How to Use</h2>
         <ol className="space-y-4 list-decimal list-inside">
           <li>
-            <span className="font-medium text-foreground">Find your SteamID.</span> Use your
-            SteamID64 or vanity URL from your Steam profile (FAQ has details).
+            <span className="font-medium text-foreground">
+              Find your SteamID.
+            </span>{" "}
+            Use your SteamID64 or vanity URL from your Steam profile (FAQ has
+            details).
           </li>
           <li>
-            <span className="font-medium text-foreground">Paste and search.</span> Enter it above
-            and click Search. Profile must be public.
+            <span className="font-medium text-foreground">
+              Paste and search.
+            </span>{" "}
+            Enter it above and click Search. Profile must be public.
           </li>
           <li>
-            <span className="font-medium text-foreground">Browse your progress.</span> Use the tabs
-            to switch between games. Filter achievements (All, Unlocked, Locked) and sort them to
-            find your next targets.
+            <span className="font-medium text-foreground">
+              Browse your progress.
+            </span>{" "}
+            Use the tabs to switch between games. Filter achievements (All,
+            Unlocked, Locked) and sort them to find your next targets.
           </li>
         </ol>
         <div>
-          <h3 className="text-base font-medium text-foreground mb-2">Examples</h3>
+          <h3 className="text-base font-medium text-foreground mb-2">
+            Examples
+          </h3>
           <ul className="space-y-2">
             <li>
               <strong>SteamID64:</strong>{" "}
@@ -386,18 +435,17 @@ export default function Home() {
         aria-label="Frequently asked questions"
         className="mt-8 pt-8 border-t border-divider max-w-2xl mx-auto space-y-4 text-default-600 dark:text-default-500 text-sm"
       >
-        <h2 className="text-lg font-semibold text-foreground">
-          FAQ
-        </h2>
+        <h2 className="text-lg font-semibold text-foreground">FAQ</h2>
         <dl className="space-y-4">
           <div>
             <dt className="font-medium text-foreground mb-1">
               Where do I find my SteamID?
             </dt>
             <dd>
-              Open your Steam profile in a browser. The SteamID64 is the 17-digit
-              number in the URL (e.g. steamcommunity.com/profiles/76561198012345678).
-              If you use a custom URL, your vanity name (e.g. steamcommunity.com/id/myname)
+              Open your Steam profile in a browser. The SteamID64 is the
+              17-digit number in the URL (e.g.
+              steamcommunity.com/profiles/76561198012345678). If you use a
+              custom URL, your vanity name (e.g. steamcommunity.com/id/myname)
               works too — enter &quot;myname&quot; in the search box.
             </dd>
           </div>
@@ -406,9 +454,10 @@ export default function Home() {
               Why aren&apos;t my achievements showing?
             </dt>
             <dd>
-              Your Steam profile must be set to <strong>Public</strong>. In Steam,
-              go to Profile → Edit Profile → Privacy Settings and set &quot;My profile&quot;
-              to Public. Game details must also be public.
+              Your Steam profile must be set to <strong>Public</strong>. In
+              Steam, go to Profile → Edit Profile → Privacy Settings and set
+              &quot;My profile&quot; to Public. Game details must also be
+              public.
             </dd>
           </div>
         </dl>
@@ -441,9 +490,10 @@ export default function Home() {
           Games Included
         </h3>
         <p>
-          All Kingdom Hearts titles on Steam: KH1 Final Mix, Re:Chain of Memories,
-          KH2 Final Mix, 358/2 Days, Birth by Sleep, Re:Coded, Dream Drop Distance,
-          0.2 Fragmentary Passage, χ Back Cover, Kingdom Hearts III, and Re Mind DLC.
+          All Kingdom Hearts titles on Steam: KH1 Final Mix, Re:Chain of
+          Memories, KH2 Final Mix, 358/2 Days, Birth by Sleep, Re:Coded, Dream
+          Drop Distance, 0.2 Fragmentary Passage, χ Back Cover, Kingdom Hearts
+          III, and Re Mind DLC.
         </p>
       </section>
     </motion.section>

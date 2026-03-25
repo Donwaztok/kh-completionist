@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { fontKH, fontSans } from "@/config/fonts";
 
@@ -67,9 +68,9 @@ export default function RootLayout({
         {ADSENSE_PUBLISHER_ID && (
           <script
             async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
             crossOrigin="anonymous"
-          ></script>
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+          />
         )}
       </head>
       <body
@@ -94,6 +95,7 @@ export default function RootLayout({
           </div>
         </Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
