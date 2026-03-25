@@ -38,11 +38,11 @@ export function SidebarAd() {
   return (
     <div className="flex justify-center pt-2">
       <ins
+        aria-hidden
         className="adsbygoogle"
         data-ad-client={publisherId}
         data-ad-slot={slotId}
         style={{ display: "inline-block", width: 250, height: 250 }}
-        aria-hidden
       />
     </div>
   );
